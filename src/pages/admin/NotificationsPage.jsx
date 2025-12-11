@@ -168,47 +168,35 @@ const NotificationsPage = () => {
     };
 
     const sendPushNotifications = async (promotion) => {
-        let successCount = 0;
-
-        for (const subscriber of subscribers.pwa) {
-            try {
-                // In a real implementation, this would call your backend API
-                // that uses web-push library to send notifications
-                const payload = {
+        try {
+            // Chamar API do Vercel para enviar notificações push
+            const response = await fetch('/api/send-push', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    promotionId: promotion.id,
                     title: promotion.title,
                     body: promotion.message,
                     icon: '/icons/icon-192.png',
-                    badge: '/icons/icon-192.png',
                     image: promotion.image_url,
-                    data: {
-                        url: promotion.link_url || '/',
-                        promotionId: promotion.id
-                    }
-                };
+                    url: promotion.link_url || '/'
+                })
+            });
 
-                // Log the notification (simulated send)
-                await supabase.from('notification_history').insert({
-                    promotion_id: promotion.id,
-                    subscriber_id: subscriber.id,
-                    channel: 'pwa',
-                    status: 'sent',
-                    sent_at: new Date().toISOString()
-                });
+            const data = await response.json();
 
-                successCount++;
-            } catch (error) {
-                console.error('Error sending push to subscriber:', error);
-                await supabase.from('notification_history').insert({
-                    promotion_id: promotion.id,
-                    subscriber_id: subscriber.id,
-                    channel: 'pwa',
-                    status: 'failed',
-                    error_message: error.message
-                });
+            if (!response.ok) {
+                console.error('Error sending push:', data.error);
+                return 0;
             }
-        }
 
-        return successCount;
+            return data.sent || 0;
+        } catch (error) {
+            console.error('Error sending push notifications:', error);
+            return 0;
+        }
     };
 
     const sendWhatsAppNotifications = async (promotion) => {
