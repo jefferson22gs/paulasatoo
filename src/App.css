@@ -1,0 +1,46 @@
+/* Additional App-specific styles */
+
+/* Ensure smooth anchor scrolling with header offset */
+html {
+  scroll-padding-top: 100px;
+}
+
+/* Loading animation for images */
+img {
+  opacity: 0;
+  animation: imageLoad 0.5s ease-out forwards;
+}
+
+@keyframes imageLoad {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Focus visible styles for accessibility */
+:focus-visible {
+  outline: 2px solid #C5A065;
+  outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

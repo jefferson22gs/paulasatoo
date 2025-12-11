@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  color: #3D3D3D;
+  background-color: #FAF8F5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E8EFE9;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #2D2D2D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7A9A88;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5C7A68;
+}
+
+/* Selection styling */
+::selection {
+  background-color: #C5A065;
+  color: white;
+}
+
+/* Safe area for mobile bottom nav */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Custom utility classes */
+@layer components {
+  .section-title {
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-charcoal mb-4;
+  }
+
+  .section-subtitle {
+    @apply text-lg md:text-xl text-charcoal/70 max-w-2xl;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-gold text-white font-medium rounded-lg transition-all duration-300 hover:bg-gold-500 hover:shadow-gold focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent text-gold border-2 border-gold font-medium rounded-lg transition-all duration-300 hover:bg-gold hover:text-white focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2;
+  }
+
+  .card {
+    @apply bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-soft transition-all duration-300 hover:shadow-card hover:-translate-y-1;
+  }
+
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-soft;
+  }
+
+  .gold-text {
+    @apply text-transparent bg-clip-text bg-gold-gradient;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Animations */
+@layer utilities {
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+}
+
+/* Image overlay effect */
+.image-overlay {
+  position: relative;
+}
+
+.image-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(61, 61, 61, 0.3) 100%);
+  pointer-events: none;
+}
+
+/* Fancy underline for links */
+.fancy-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.fancy-underline::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #C5A065;
+  transition: width 0.3s ease;
+}
+
+.fancy-underline:hover::after {
+  width: 100%;
+}
