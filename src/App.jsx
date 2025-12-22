@@ -56,8 +56,7 @@ const PublicSite = () => (
     <SiteImagesProvider>
       <ThemeProvider>
         <div className="min-h-screen bg-cream dark:bg-charcoal transition-colors duration-300">
-          {/* Custom Cursor - Desktop Only */}
-          <CustomCursor />
+          {/* Custom Cursor removido - usando cursor padrão do sistema */}
 
           {/* Header */}
           <Header />
