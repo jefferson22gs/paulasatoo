@@ -44,9 +44,13 @@ const HeroSection = () => {
         },
     };
 
-    const headlineText = 'Transformando';
-    const highlightText = 'beleza';
-    const endText = 'em confiança';
+    // Textos editáveis via admin
+    const fullTitle = content.hero_title || 'Transformando beleza em confiança';
+    // Dividir o título em 3 partes: antes, destaque (itálico), depois
+    const titleParts = fullTitle.split(/\*(.*?)\*/); // Usa *texto* para destacar
+    const headlineText = titleParts[0] || 'Transformando ';
+    const highlightText = titleParts[1] || 'beleza';
+    const endText = titleParts[2] || ' em confiança';
 
     return (
         <section
@@ -111,7 +115,7 @@ const HeroSection = () => {
                         transition={{ delay: 0.3 }}
                         className="text-gold font-medium tracking-widest uppercase text-sm mb-6"
                     >
-                        Farmacêutica Esteta em Indaiatuba
+                        {content.hero_badge || 'Farmacêutica Esteta em Indaiatuba'}
                     </motion.p>
 
                     {/* Animated Headline */}
@@ -168,7 +172,7 @@ const HeroSection = () => {
                        hover:shadow-gold"
                         >
                             <MessageCircle className="w-5 h-5" />
-                            Agendar via WhatsApp
+                            {content.hero_cta_primary || 'Agendar via WhatsApp'}
                         </motion.button>
                         <motion.a
                             href="#tratamentos"
@@ -178,7 +182,7 @@ const HeroSection = () => {
                        text-white font-medium rounded-lg transition-all duration-300 
                        hover:bg-white/10 hover:border-white"
                         >
-                            Conheça os Tratamentos
+                            {content.hero_cta_secondary || 'Conheça os Tratamentos'}
                         </motion.a>
                     </motion.div>
                 </motion.div>

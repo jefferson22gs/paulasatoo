@@ -364,7 +364,24 @@ const SiteContentPage = () => {
                 </p>
 
                 {renderTextField('hero_badge', 'Badge (texto pequeno acima do título)')}
-                {renderTextField('hero_title', 'Título Principal')}
+
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-charcoal/70 mb-2">
+                        Título Principal
+                    </label>
+                    <input
+                        type="text"
+                        value={content['hero_title'] || ''}
+                        onChange={(e) => handleContentChange('hero_title', e.target.value)}
+                        className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl 
+                                   focus:border-sage focus:ring-0 outline-none transition-colors"
+                        placeholder="Transformando *beleza* em confiança"
+                    />
+                    <p className="text-xs text-charcoal/50 mt-1">
+                        💡 Use *asteriscos* para destacar uma palavra em itálico dourado. Ex: Transformando *beleza* em confiança
+                    </p>
+                </div>
+
                 {renderTextField('hero_subtitle', 'Subtítulo', true, 3)}
                 <div className="grid md:grid-cols-2 gap-4">
                     {renderTextField('hero_cta_primary', 'Botão Principal')}
@@ -543,8 +560,8 @@ const SiteContentPage = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         className={`p-4 rounded-xl flex items-center gap-3 ${message.type === 'success'
-                                ? 'bg-green-50 text-green-700'
-                                : 'bg-red-50 text-red-700'
+                            ? 'bg-green-50 text-green-700'
+                            : 'bg-red-50 text-red-700'
                             }`}
                     >
                         {message.type === 'success' ? (
@@ -576,8 +593,8 @@ const SiteContentPage = () => {
                                         key={section.id}
                                         onClick={() => setActiveSection(section.id)}
                                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-colors ${activeSection === section.id
-                                                ? 'bg-sage text-white'
-                                                : 'text-charcoal/70 hover:bg-gray-50'
+                                            ? 'bg-sage text-white'
+                                            : 'text-charcoal/70 hover:bg-gray-50'
                                             }`}
                                     >
                                         <Icon className="w-5 h-5" />
