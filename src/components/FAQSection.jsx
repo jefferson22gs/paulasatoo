@@ -2,42 +2,31 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedSection from './AnimatedSection';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import { useSiteContent } from '../lib/siteContent.jsx';
+import { useDynamicData } from '../lib/dynamicData.jsx';
 
 const FAQSection = () => {
     const [openIndex, setOpenIndex] = useState(null);
+    const { content } = useSiteContent();
+    const { faqs: dynamicFaqs } = useDynamicData();
 
-    const faqs = [
+    // Usar dados do banco se disponíveis, senão usar fallback
+    const faqs = dynamicFaqs.length > 0 ? dynamicFaqs : [
         {
             question: 'Os procedimentos são dolorosos?',
-            answer: 'A maioria dos procedimentos causa apenas um leve desconforto. Utilizamos anestésicos tópicos e técnicas que minimizam qualquer incômodo. Nosso objetivo é sempre proporcionar uma experiência confortável.',
+            answer: 'A maioria dos procedimentos causa apenas um leve desconforto. Utilizamos anestésicos tópicos e técnicas que minimizam qualquer incômodo.',
         },
         {
             question: 'Quanto tempo duram os resultados?',
-            answer: 'A duração varia conforme o procedimento: Toxina Botulínica dura de 4 a 6 meses, Preenchimentos de 8 a 18 meses, e Bioestimuladores podem durar até 2 anos. Fatores como metabolismo e cuidados pós-procedimento influenciam.',
-        },
-        {
-            question: 'Qual o tempo de recuperação?',
-            answer: 'A maioria dos procedimentos tem recuperação rápida. Pode haver leve vermelhidão ou pequenos hematomas que desaparecem em poucos dias. Você pode retornar às atividades normais geralmente no mesmo dia.',
+            answer: 'A duração varia conforme o procedimento: Toxina Botulínica dura de 4 a 6 meses, Preenchimentos de 8 a 18 meses, e Bioestimuladores podem durar até 2 anos.',
         },
         {
             question: 'É possível ter resultados naturais?',
-            answer: 'Absolutamente! Nossa filosofia é o "menos é mais". Trabalhamos para realçar sua beleza natural, não transformá-la. Cada procedimento é personalizado para harmonizar com suas características únicas.',
-        },
-        {
-            question: 'Preciso de avaliação antes do procedimento?',
-            answer: 'Sim, a avaliação prévia é fundamental. Nela, analisamos suas características faciais, histórico de saúde, expectativas e definimos juntos o melhor plano de tratamento para você.',
-        },
-        {
-            question: 'Quais cuidados devo ter após os procedimentos?',
-            answer: 'Os cuidados variam por procedimento, mas geralmente incluem: evitar exposição solar intensa, não massagear a área tratada, evitar exercícios intensos nas primeiras 24h e manter boa hidratação.',
-        },
-        {
-            question: 'Gestantes podem fazer procedimentos estéticos?',
-            answer: 'Para gestantes, oferecemos tratamentos específicos e seguros como a Drenagem Linfática. Procedimentos injetáveis não são recomendados durante a gestação e amamentação.',
+            answer: 'Absolutamente! Nossa filosofia é o "menos é mais". Trabalhamos para realçar sua beleza natural, não transformá-la.',
         },
         {
             question: 'Como funciona o agendamento?',
-            answer: 'Você pode agendar sua avaliação pelo WhatsApp, telefone ou pelo formulário no site. Retornamos rapidamente para confirmar o melhor horário. A avaliação inicial é sem compromisso.',
+            answer: 'Você pode agendar sua avaliação pelo WhatsApp, telefone ou pelo formulário no site. Retornamos rapidamente para confirmar o melhor horário.',
         },
     ];
 

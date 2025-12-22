@@ -3,20 +3,32 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedSection from './AnimatedSection';
 import { Quote, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { useSiteImages } from '../lib/siteImages.jsx';
+import { useSiteContent } from '../lib/siteContent.jsx';
+import { useDynamicData } from '../lib/dynamicData.jsx';
 
 const TestimonialsSection = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(0);
     const { images } = useSiteImages();
+    const { content } = useSiteContent();
+    const { testimonials: dynamicTestimonials } = useDynamicData();
 
-    const testimonials = [
+    // Usar dados do banco se disponíveis, senão usar fallback
+    const testimonials = dynamicTestimonials.length > 0 ? dynamicTestimonials.map((t, i) => ({
+        id: t.id,
+        name: t.name,
+        treatment: t.role || 'Cliente',
+        image: t.image_url || images[`testimonial-${i + 1}`] || '/images/dra.paulasatoo-20251210-0031.jpg',
+        rating: t.rating || 5,
+        text: t.content,
+    })) : [
         {
             id: 1,
             name: 'Maria Clara S.',
             treatment: 'Harmonização Facial',
             image: images['testimonial-1'] || '/images/dra.paulasatoo-20251210-0031.jpg',
             rating: 5,
-            text: 'Resultado incrível e super natural! A Dra. Paula tem mãos de fada e entendeu exatamente o que eu queria. Me sinto mais confiante e bonita.',
+            text: 'Resultado incrível e super natural! A Dra. Paula tem mãos de fada e entendeu exatamente o que eu queria.',
         },
         {
             id: 2,
@@ -24,23 +36,7 @@ const TestimonialsSection = () => {
             treatment: 'Preenchimento Labial',
             image: images['testimonial-2'] || '/images/dra.paulasatoo-20251210-0032.jpg',
             rating: 5,
-            text: 'Sempre tive medo de procedimentos estéticos, mas a Dra. Paula me deixou super tranquila. O resultado ficou lindo e natural, exatamente como eu sonhava!',
-        },
-        {
-            id: 3,
-            name: 'Fernanda R.',
-            treatment: 'Bioestimuladores',
-            image: images['testimonial-3'] || '/images/dra.paulasatoo-20251210-0033.jpg',
-            rating: 5,
-            text: 'Fiz bioestimuladores e estou amando o resultado! Minha pele está muito mais firme e com viço. Atendimento impecável do início ao fim.',
-        },
-        {
-            id: 4,
-            name: 'Carolina T.',
-            treatment: 'Skinbooster',
-            image: images['testimonial-4'] || '/images/dra.paulasatoo-20251210-0034.jpg',
-            rating: 5,
-            text: 'A hidratação profunda do Skinbooster transformou minha pele. Nunca esteve tão bonita! Recomendo demais a Dra. Paula.',
+            text: 'Sempre tive medo de procedimentos estéticos, mas a Dra. Paula me deixou super tranquila.',
         },
     ];
 

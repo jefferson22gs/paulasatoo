@@ -1,9 +1,11 @@
 import { MapPin, Phone, Mail, Clock, Instagram, MessageCircle } from 'lucide-react';
 import { useSiteSettings } from '../lib/siteSettings.jsx';
+import { useSiteContent } from '../lib/siteContent.jsx';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
     const { settings } = useSiteSettings();
+    const { content } = useSiteContent();
 
     const quickLinks = [
         { name: 'Início', href: '#inicio' },
@@ -31,14 +33,13 @@ const Footer = () => {
                     <div className="lg:col-span-1">
                         <div className="mb-6">
                             <span className="font-serif text-3xl font-semibold text-gold">PS</span>
-                            <p className="text-xl font-serif mt-2">{settings.business_name || 'Dra. Paula Satoo'}</p>
+                            <p className="text-xl font-serif mt-2">{content.footer_brand || settings.business_name || 'Dra. Paula Satoo'}</p>
                             <p className="text-white/60 text-sm tracking-widest uppercase">
-                                {settings.tagline || 'Estética Avançada'}
+                                {content.footer_tagline || settings.tagline || 'Estética Avançada'}
                             </p>
                         </div>
                         <p className="text-white/70 text-sm leading-relaxed mb-6">
-                            Farmacêutica Esteta especializada em harmonização facial e
-                            procedimentos estéticos que realçam sua beleza natural.
+                            {content.footer_description || 'Farmacêutica Esteta especializada em harmonização facial e procedimentos estéticos que realçam sua beleza natural.'}
                         </p>
 
                         {/* Social Links */}

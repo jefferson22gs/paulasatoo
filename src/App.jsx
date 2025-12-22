@@ -57,83 +57,88 @@ import { SiteSettingsProvider } from './lib/siteSettings.jsx';
 // Site Content Provider
 import { SiteContentProvider } from './lib/siteContent.jsx';
 
+// Dynamic Data Provider
+import { DynamicDataProvider } from './lib/dynamicData.jsx';
+
 import './App.css';
 
 // Public site component
 const PublicSite = () => (
   <SiteSettingsProvider>
     <SiteContentProvider>
-      <SiteImagesProvider>
-        <ThemeProvider>
-          <div className="min-h-screen bg-cream dark:bg-charcoal transition-colors duration-300">
-            {/* Custom Cursor removido - usando cursor padrão do sistema */}
+      <DynamicDataProvider>
+        <SiteImagesProvider>
+          <ThemeProvider>
+            <div className="min-h-screen bg-cream dark:bg-charcoal transition-colors duration-300">
+              {/* Custom Cursor removido - usando cursor padrão do sistema */}
 
-            {/* Header */}
-            <Header />
+              {/* Header */}
+              <Header />
 
-            {/* Theme Toggle */}
-            <ThemeToggle />
+              {/* Theme Toggle */}
+              <ThemeToggle />
 
-            {/* Main Content */}
-            <main className="pb-16 lg:pb-0">
-              {/* Hero with Parallax */}
-              <HeroSection />
+              {/* Main Content */}
+              <main className="pb-16 lg:pb-0">
+                {/* Hero with Parallax */}
+                <HeroSection />
 
-              {/* About Section */}
-              <AboutSection />
+                {/* About Section */}
+                <AboutSection />
 
-              {/* Stats with Animated Counters */}
-              <StatsSection />
+                {/* Stats with Animated Counters */}
+                <StatsSection />
 
-              {/* Services Grid */}
-              <ServicesSection />
+                {/* Services Grid */}
+                <ServicesSection />
 
-              {/* Before/After Comparison */}
-              <BeforeAfterSection />
+                {/* Before/After Comparison */}
+                <BeforeAfterSection />
 
-              {/* Testimonials Carousel */}
-              <TestimonialsSection />
+                {/* Testimonials Carousel */}
+                <TestimonialsSection />
 
-              {/* Procedure Calculator */}
-              <ProcedureCalculator />
+                {/* Procedure Calculator */}
+                <ProcedureCalculator />
 
-              {/* Scheduling Form */}
-              <SchedulingSection />
+                {/* Scheduling Form */}
+                <SchedulingSection />
 
-              {/* Video Content */}
-              <VideoSection />
+                {/* Video Content */}
+                <VideoSection />
 
-              {/* Instagram Feed */}
-              <InstagramSection />
+                {/* Instagram Feed */}
+                <InstagramSection />
 
-              {/* Blog Preview */}
-              <BlogSection />
+                {/* Blog Preview */}
+                <BlogSection />
 
-              {/* FAQ Accordion */}
-              <FAQSection />
+                {/* FAQ Accordion */}
+                <FAQSection />
 
-              {/* Referral Program - Indique e Ganhe */}
-              <ReferralSection />
+                {/* Referral Program - Indique e Ganhe */}
+                <ReferralSection />
 
-              {/* Certifications & Brands */}
-              <CertificationsSection />
+                {/* Certifications & Brands */}
+                <CertificationsSection />
 
-              {/* Newsletter Signup */}
-              <NewsletterSection />
-            </main>
+                {/* Newsletter Signup */}
+                <NewsletterSection />
+              </main>
 
-            {/* Footer */}
-            <Footer />
+              {/* Footer */}
+              <Footer />
 
-            {/* Floating Elements */}
-            <WhatsAppButton />
-            <ChatBot />
-            <InstallPWA />
-            <PushNotificationPrompt />
-            <MobileNav />
-          </div>
-        </ThemeProvider>
-      </SiteImagesProvider>
+              {/* Floating Elements */}
+              <WhatsAppButton />
+              <ChatBot />
+              <InstallPWA />
+              <PushNotificationPrompt />
+              <MobileNav />
+            </div>
+          </ThemeProvider>
+        </SiteImagesProvider>
+      </DynamicDataProvider>
     </SiteContentProvider>
   </SiteSettingsProvider>
 );
