@@ -17,7 +17,12 @@ import {
     ImagePlus,
     Bell,
     Gift,
-    FileText
+    FileText,
+    MessageSquare,
+    HelpCircle,
+    Video,
+    Palette,
+    BarChart3
 } from 'lucide-react';
 
 const AdminLayout = () => {
@@ -37,8 +42,13 @@ const AdminLayout = () => {
         { name: 'Serviços & Preços', path: '/admin/services', icon: DollarSign },
         { name: 'Imagens do Site', path: '/admin/site-images', icon: ImagePlus },
         { name: 'Galeria', path: '/admin/gallery', icon: Image },
+        { name: 'Depoimentos', path: '/admin/testimonials', icon: MessageSquare },
+        { name: 'FAQ', path: '/admin/faq', icon: HelpCircle },
+        { name: 'Vídeos', path: '/admin/videos', icon: Video },
         { name: 'Agendamentos', path: '/admin/appointments', icon: Calendar },
         { name: 'Horários', path: '/admin/schedules', icon: Clock },
+        { name: 'SEO & Tema', path: '/admin/seo-theme', icon: Palette },
+        { name: 'Relatórios', path: '/admin/reports', icon: BarChart3 },
         { name: 'Notificações', path: '/admin/notifications', icon: Bell },
         { name: 'Indicações', path: '/admin/referrals', icon: Gift },
     ];

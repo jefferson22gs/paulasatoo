@@ -38,6 +38,11 @@ import SiteImagesPage from './pages/admin/SiteImagesPage';
 import NotificationsPage from './pages/admin/NotificationsPage';
 import ReferralPage from './pages/admin/ReferralPage';
 import SiteContentPage from './pages/admin/SiteContentPage';
+import TestimonialsPage from './pages/admin/TestimonialsPage';
+import FAQPage from './pages/admin/FAQPage';
+import SEOThemePage from './pages/admin/SEOThemePage';
+import ReportsPage from './pages/admin/ReportsPage';
+import VideosPage from './pages/admin/VideosPage';
 
 // Public components for new features
 import ReferralSection from './components/ReferralSection';
@@ -158,6 +163,11 @@ function App() {
           <Route path="schedules" element={<SchedulesPage />} />
           <Route path="site-images" element={<SiteImagesPage />} />
           <Route path="site-content" element={<SiteContentPage />} />
+          <Route path="testimonials" element={<TestimonialsPage />} />
+          <Route path="faq" element={<FAQPage />} />
+          <Route path="videos" element={<VideosPage />} />
+          <Route path="seo-theme" element={<SEOThemePage />} />
+          <Route path="reports" element={<ReportsPage />} />
           <Route path="notifications" element={<NotificationsPage />} />
           <Route path="referrals" element={<ReferralPage />} />
         </Route>
