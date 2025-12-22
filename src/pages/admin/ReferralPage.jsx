@@ -31,6 +31,8 @@ import { supabase } from '../../lib/supabase';
 const ReferralPage = () => {
     const [program, setProgram] = useState({
         is_active: true,
+        referrer_discount_active: true,
+        referred_discount_active: true,
         referrer_discount_percentage: 10,
         referred_discount_percentage: 15,
         min_purchase_value: 0,
@@ -123,6 +125,8 @@ const ReferralPage = () => {
                     .from('referral_program')
                     .update({
                         is_active: program.is_active,
+                        referrer_discount_active: program.referrer_discount_active,
+                        referred_discount_active: program.referred_discount_active,
                         referrer_discount_percentage: program.referrer_discount_percentage,
                         referred_discount_percentage: program.referred_discount_percentage,
                         min_purchase_value: program.min_purchase_value,
@@ -139,6 +143,8 @@ const ReferralPage = () => {
                     .from('referral_program')
                     .insert({
                         is_active: program.is_active,
+                        referrer_discount_active: program.referrer_discount_active,
+                        referred_discount_active: program.referred_discount_active,
                         referrer_discount_percentage: program.referrer_discount_percentage,
                         referred_discount_percentage: program.referred_discount_percentage,
                         min_purchase_value: program.min_purchase_value,
@@ -770,8 +776,8 @@ const ReferralPage = () => {
                             </h2>
 
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {/* Active Toggle */}
-                                <div className="md:col-span-2 lg:col-span-3">
+                                {/* Active Toggle - Programa Geral */}
+                                <div className="md:col-span-2 lg:col-span-3 p-4 bg-sage/5 rounded-xl border border-sage/20">
                                     <label className="flex items-center gap-4 cursor-pointer">
                                         <div className="relative">
                                             <input
@@ -785,16 +791,30 @@ const ReferralPage = () => {
                                             </div>
                                         </div>
                                         <div>
-                                            <span className="font-medium text-charcoal">Programa Ativo</span>
-                                            <p className="text-sm text-charcoal/60">Habilita ou desabilita o programa de indicação</p>
+                                            <span className="font-medium text-charcoal">🎯 Programa de Indicação Ativo</span>
+                                            <p className="text-sm text-charcoal/60">Desativa/ativa TODO o programa de indicação no site</p>
                                         </div>
                                     </label>
                                 </div>
 
-                                {/* Referrer Discount */}
-                                <div>
-                                    <label className="block text-sm font-medium text-charcoal/70 mb-2">
-                                        Desconto do Indicador (%)
+                                {/* Referrer Discount Toggle */}
+                                <div className="p-4 bg-purple-50 rounded-xl border border-purple-100">
+                                    <label className="flex items-center gap-4 cursor-pointer mb-4">
+                                        <div className="relative">
+                                            <input
+                                                type="checkbox"
+                                                checked={program.referrer_discount_active}
+                                                onChange={(e) => handleProgramChange('referrer_discount_active', e.target.checked)}
+                                                className="sr-only"
+                                            />
+                                            <div className={`w-12 h-6 rounded-full transition-colors ${program.referrer_discount_active ? 'bg-purple-500' : 'bg-gray-300'}`}>
+                                                <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${program.referrer_discount_active ? 'translate-x-6' : ''}`} />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <span className="font-medium text-charcoal text-sm">Desconto do Indicador</span>
+                                            <p className="text-xs text-charcoal/50">Quem indica ganha desconto</p>
+                                        </div>
                                     </label>
                                     <div className="relative">
                                         <Percent className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-charcoal/40" />
@@ -805,17 +825,32 @@ const ReferralPage = () => {
                                             step="0.5"
                                             value={program.referrer_discount_percentage}
                                             onChange={(e) => handleProgramChange('referrer_discount_percentage', parseFloat(e.target.value) || 0)}
-                                            className="w-full pl-12 pr-4 py-3 border-2 border-gray-100 rounded-xl 
-                                                       focus:border-sage focus:ring-0 outline-none transition-colors"
+                                            disabled={!program.referrer_discount_active}
+                                            className={`w-full pl-12 pr-4 py-3 border-2 border-gray-100 rounded-xl 
+                                                       focus:border-sage focus:ring-0 outline-none transition-colors
+                                                       ${!program.referrer_discount_active ? 'opacity-50 bg-gray-50' : ''}`}
                                         />
                                     </div>
-                                    <p className="text-xs text-charcoal/50 mt-1">Desconto para quem indica</p>
                                 </div>
 
-                                {/* Referred Discount */}
-                                <div>
-                                    <label className="block text-sm font-medium text-charcoal/70 mb-2">
-                                        Desconto do Indicado (%)
+                                {/* Referred Discount Toggle */}
+                                <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
+                                    <label className="flex items-center gap-4 cursor-pointer mb-4">
+                                        <div className="relative">
+                                            <input
+                                                type="checkbox"
+                                                checked={program.referred_discount_active}
+                                                onChange={(e) => handleProgramChange('referred_discount_active', e.target.checked)}
+                                                className="sr-only"
+                                            />
+                                            <div className={`w-12 h-6 rounded-full transition-colors ${program.referred_discount_active ? 'bg-blue-500' : 'bg-gray-300'}`}>
+                                                <div className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${program.referred_discount_active ? 'translate-x-6' : ''}`} />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <span className="font-medium text-charcoal text-sm">Desconto do Indicado</span>
+                                            <p className="text-xs text-charcoal/50">Quem é indicado ganha desconto</p>
+                                        </div>
                                     </label>
                                     <div className="relative">
                                         <Percent className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-charcoal/40" />
@@ -826,12 +861,14 @@ const ReferralPage = () => {
                                             step="0.5"
                                             value={program.referred_discount_percentage}
                                             onChange={(e) => handleProgramChange('referred_discount_percentage', parseFloat(e.target.value) || 0)}
-                                            className="w-full pl-12 pr-4 py-3 border-2 border-gray-100 rounded-xl 
-                                                       focus:border-sage focus:ring-0 outline-none transition-colors"
+                                            disabled={!program.referred_discount_active}
+                                            className={`w-full pl-12 pr-4 py-3 border-2 border-gray-100 rounded-xl 
+                                                       focus:border-sage focus:ring-0 outline-none transition-colors
+                                                       ${!program.referred_discount_active ? 'opacity-50 bg-gray-50' : ''}`}
                                         />
                                     </div>
-                                    <p className="text-xs text-charcoal/50 mt-1">Desconto para quem é indicado</p>
                                 </div>
+
 
                                 {/* Expiry Days */}
                                 <div>

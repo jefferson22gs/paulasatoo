@@ -53,6 +53,8 @@ CREATE TABLE IF NOT EXISTS notification_history (
 CREATE TABLE IF NOT EXISTS referral_program (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     is_active BOOLEAN DEFAULT TRUE,
+    referrer_discount_active BOOLEAN DEFAULT TRUE,
+    referred_discount_active BOOLEAN DEFAULT TRUE,
     referrer_discount_percentage DECIMAL(5,2) DEFAULT 10.00,
     referred_discount_percentage DECIMAL(5,2) DEFAULT 15.00,
     min_purchase_value DECIMAL(10,2) DEFAULT 0,
