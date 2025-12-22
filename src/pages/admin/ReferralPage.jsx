@@ -108,19 +108,55 @@ const ReferralPage = () => {
     const saveProgram = async () => {
         setSaving(true);
         try {
-            const { error } = await supabase
+            // Verificar se já existe um registro
+            const { data: existingData, error: checkError } = await supabase
                 .from('referral_program')
-                .upsert({
-                    ...program,
-                    updated_at: new Date().toISOString()
-                });
+                .select('id')
+                .limit(1)
+                .single();
+
+            let error;
+
+            if (existingData && existingData.id) {
+                // Atualizar registro existente
+                const { error: updateError } = await supabase
+                    .from('referral_program')
+                    .update({
+                        is_active: program.is_active,
+                        referrer_discount_percentage: program.referrer_discount_percentage,
+                        referred_discount_percentage: program.referred_discount_percentage,
+                        min_purchase_value: program.min_purchase_value,
+                        max_discount_value: program.max_discount_value,
+                        expiry_days: program.expiry_days,
+                        terms_conditions: program.terms_conditions,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', existingData.id);
+                error = updateError;
+            } else {
+                // Inserir novo registro
+                const { error: insertError } = await supabase
+                    .from('referral_program')
+                    .insert({
+                        is_active: program.is_active,
+                        referrer_discount_percentage: program.referrer_discount_percentage,
+                        referred_discount_percentage: program.referred_discount_percentage,
+                        min_purchase_value: program.min_purchase_value,
+                        max_discount_value: program.max_discount_value,
+                        expiry_days: program.expiry_days,
+                        terms_conditions: program.terms_conditions,
+                        updated_at: new Date().toISOString()
+                    });
+                error = insertError;
+            }
 
             if (error) throw error;
 
             setMessage({ type: 'success', text: 'Configurações salvas com sucesso!' });
+            loadData(); // Recarregar dados
         } catch (error) {
             console.error('Error saving program:', error);
-            setMessage({ type: 'error', text: 'Erro ao salvar configurações' });
+            setMessage({ type: 'error', text: `Erro ao salvar: ${error.message || 'Verifique as políticas RLS no Supabase'}` });
         } finally {
             setSaving(false);
         }
@@ -405,8 +441,8 @@ const ReferralPage = () => {
                 <button
                     onClick={() => setActiveTab('validator')}
                     className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors border-b-2 -mb-px ${activeTab === 'validator'
-                            ? 'text-sage border-sage'
-                            : 'text-charcoal/60 border-transparent hover:text-charcoal'
+                        ? 'text-sage border-sage'
+                        : 'text-charcoal/60 border-transparent hover:text-charcoal'
                         }`}
                 >
                     <Shield className="w-5 h-5" />
@@ -415,8 +451,8 @@ const ReferralPage = () => {
                 <button
                     onClick={() => setActiveTab('settings')}
                     className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors border-b-2 -mb-px ${activeTab === 'settings'
-                            ? 'text-sage border-sage'
-                            : 'text-charcoal/60 border-transparent hover:text-charcoal'
+                        ? 'text-sage border-sage'
+                        : 'text-charcoal/60 border-transparent hover:text-charcoal'
                         }`}
                 >
                     <Settings className="w-5 h-5" />
@@ -425,8 +461,8 @@ const ReferralPage = () => {
                 <button
                     onClick={() => setActiveTab('codes')}
                     className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors border-b-2 -mb-px ${activeTab === 'codes'
-                            ? 'text-sage border-sage'
-                            : 'text-charcoal/60 border-transparent hover:text-charcoal'
+                        ? 'text-sage border-sage'
+                        : 'text-charcoal/60 border-transparent hover:text-charcoal'
                         }`}
                 >
                     <Users className="w-5 h-5" />
@@ -509,23 +545,23 @@ const ReferralPage = () => {
                                         >
                                             {/* Status Banner */}
                                             <div className={`p-6 rounded-2xl ${validationResult.color === 'green' ? 'bg-green-50 border-2 border-green-200' :
-                                                    validationResult.color === 'yellow' ? 'bg-yellow-50 border-2 border-yellow-200' :
-                                                        'bg-red-50 border-2 border-red-200'
+                                                validationResult.color === 'yellow' ? 'bg-yellow-50 border-2 border-yellow-200' :
+                                                    'bg-red-50 border-2 border-red-200'
                                                 }`}>
                                                 <div className="flex items-center gap-4">
                                                     <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${validationResult.color === 'green' ? 'bg-green-100' :
-                                                            validationResult.color === 'yellow' ? 'bg-yellow-100' :
-                                                                'bg-red-100'
+                                                        validationResult.color === 'yellow' ? 'bg-yellow-100' :
+                                                            'bg-red-100'
                                                         }`}>
                                                         <validationResult.icon className={`w-8 h-8 ${validationResult.color === 'green' ? 'text-green-600' :
-                                                                validationResult.color === 'yellow' ? 'text-yellow-600' :
-                                                                    'text-red-600'
+                                                            validationResult.color === 'yellow' ? 'text-yellow-600' :
+                                                                'text-red-600'
                                                             }`} />
                                                     </div>
                                                     <div>
                                                         <h3 className={`text-xl font-bold ${validationResult.color === 'green' ? 'text-green-700' :
-                                                                validationResult.color === 'yellow' ? 'text-yellow-700' :
-                                                                    'text-red-700'
+                                                            validationResult.color === 'yellow' ? 'text-yellow-700' :
+                                                                'text-red-700'
                                                             }`}>
                                                             {validationResult.message}
                                                         </h3>
@@ -573,8 +609,8 @@ const ReferralPage = () => {
                                                         <div>
                                                             <p className="text-xs text-charcoal/50 uppercase tracking-wide mb-1">Expira em</p>
                                                             <p className={`font-medium flex items-center gap-2 ${validationResult.isExpired ? 'text-red-600' :
-                                                                    validationResult.daysUntilExpiry <= 7 ? 'text-yellow-600' :
-                                                                        'text-green-600'
+                                                                validationResult.daysUntilExpiry <= 7 ? 'text-yellow-600' :
+                                                                    'text-green-600'
                                                                 }`}>
                                                                 <Clock className="w-4 h-4" />
                                                                 {validationResult.isExpired

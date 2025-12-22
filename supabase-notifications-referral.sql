@@ -146,7 +146,9 @@ CREATE POLICY "Allow authenticated full access on notification_history" ON notif
 
 -- Políticas para referral_program
 CREATE POLICY "Allow public read on referral_program" ON referral_program FOR SELECT USING (true);
+CREATE POLICY "Allow authenticated insert on referral_program" ON referral_program FOR INSERT TO authenticated WITH CHECK (true);
 CREATE POLICY "Allow authenticated update on referral_program" ON referral_program FOR UPDATE TO authenticated USING (true);
+CREATE POLICY "Allow authenticated delete on referral_program" ON referral_program FOR DELETE TO authenticated USING (true);
 
 -- Políticas para referrals
 CREATE POLICY "Allow public insert on referrals" ON referrals FOR INSERT WITH CHECK (true);
