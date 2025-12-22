@@ -1,9 +1,12 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown, MessageCircle } from 'lucide-react';
+import { useSiteImages } from '../lib/siteImages.jsx';
 
 const HeroSection = () => {
     const containerRef = useRef(null);
+    const { images } = useSiteImages();
+
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ['start start', 'end start'],
@@ -53,7 +56,7 @@ const HeroSection = () => {
                 style={{ y: backgroundY }}
             >
                 <img
-                    src="/images/dra.paulasatoo-20251210-0005.jpg"
+                    src={images.hero || '/images/dra.paulasatoo-20251210-0005.jpg'}
                     alt="Dra. Paula Satoo - Estética Avançada"
                     className="w-full h-[120%] object-cover"
                 />

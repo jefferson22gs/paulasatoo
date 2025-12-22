@@ -1,7 +1,10 @@
 import AnimatedSection from './AnimatedSection';
 import { Award, Heart, Sparkles } from 'lucide-react';
+import { useSiteImages } from '../lib/siteImages.jsx';
 
 const AboutSection = () => {
+    const { images } = useSiteImages();
+
     const highlights = [
         {
             icon: Award,
@@ -30,7 +33,7 @@ const AboutSection = () => {
                             {/* Main Image */}
                             <div className="relative z-10 rounded-2xl overflow-hidden shadow-card">
                                 <img
-                                    src="/images/dra.paulasatoo-20251210-0030.jpg"
+                                    src={images.about || '/images/dra.paulasatoo-20251210-0030.jpg'}
                                     alt="Dra. Paula Satoo"
                                     className="w-full h-auto object-cover"
                                 />
