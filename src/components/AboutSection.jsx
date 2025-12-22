@@ -1,9 +1,11 @@
 import AnimatedSection from './AnimatedSection';
 import { Award, Heart, Sparkles } from 'lucide-react';
 import { useSiteImages } from '../lib/siteImages.jsx';
+import { useSiteContent } from '../lib/siteContent.jsx';
 
 const AboutSection = () => {
     const { images } = useSiteImages();
+    const { content } = useSiteContent();
 
     const highlights = [
         {
@@ -46,8 +48,8 @@ const AboutSection = () => {
                             {/* Stats Card */}
                             <div className="absolute -bottom-8 -right-4 lg:right-8 bg-white rounded-xl shadow-card p-6 z-20">
                                 <div className="text-center">
-                                    <span className="block font-serif text-3xl text-gold font-semibold">+500</span>
-                                    <span className="text-sm text-charcoal/70">Pacientes atendidas</span>
+                                    <span className="block font-serif text-3xl text-gold font-semibold">+{content.about_procedures_count || '500'}</span>
+                                    <span className="text-sm text-charcoal/70">{content.about_procedures_label || 'Pacientes atendidas'}</span>
                                 </div>
                             </div>
                         </div>
@@ -58,26 +60,21 @@ const AboutSection = () => {
                         <div className="lg:pl-8">
                             {/* Section Label */}
                             <span className="text-gold font-medium tracking-widest uppercase text-sm">
-                                Sobre
+                                {content.about_badge || 'Sobre'}
                             </span>
 
                             {/* Title */}
                             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-charcoal mt-4 mb-6 leading-tight">
-                                Dra. Paula Satoo
+                                {content.about_title || 'Dra. Paula Satoo'}
                             </h2>
 
                             {/* Description */}
                             <div className="space-y-4 text-charcoal/80 leading-relaxed">
                                 <p>
-                                    Farmacêutica Esteta apaixonada pela ciência da beleza e do cuidado.
-                                    Com formação especializada em harmonização facial e procedimentos
-                                    estéticos avançados, minha missão é realçar a beleza natural de
-                                    cada paciente.
+                                    {content.about_paragraph_1 || 'Farmacêutica Esteta apaixonada pela ciência da beleza e do cuidado. Com formação especializada em harmonização facial e procedimentos estéticos avançados, minha missão é realçar a beleza natural de cada paciente.'}
                                 </p>
                                 <p>
-                                    Acredito que a estética vai além da aparência — é sobre como você
-                                    se sente. Por isso, cada procedimento é personalizado, respeitando
-                                    suas características únicas e desejos.
+                                    {content.about_paragraph_2 || 'Acredito que a estética vai além da aparência — é sobre como você se sente. Por isso, cada procedimento é personalizado, respeitando suas características únicas e desejos.'}
                                 </p>
                             </div>
 

@@ -11,9 +11,11 @@ import {
     Users
 } from 'lucide-react';
 import { useSiteImages } from '../lib/siteImages.jsx';
+import { useSiteContent } from '../lib/siteContent.jsx';
 
 const ServicesSection = () => {
     const { images } = useSiteImages();
+    const { content } = useSiteContent();
 
     const services = [
         {
@@ -80,14 +82,13 @@ const ServicesSection = () => {
                 {/* Section Header */}
                 <AnimatedSection className="text-center mb-16">
                     <span className="text-gold font-medium tracking-widest uppercase text-sm">
-                        Nossos Serviços
+                        {content.services_badge || 'Nossos Serviços'}
                     </span>
                     <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-charcoal mt-4 mb-6">
-                        Tratamentos <span className="text-gold">Exclusivos</span>
+                        {content.services_title || 'Tratamentos Exclusivos'}
                     </h2>
                     <p className="text-charcoal/70 max-w-2xl mx-auto leading-relaxed">
-                        Procedimentos realizados com as melhores técnicas e produtos do mercado,
-                        sempre focando em resultados naturais e na sua satisfação.
+                        {content.services_subtitle || 'Procedimentos realizados com as melhores técnicas e produtos do mercado, sempre focando em resultados naturais e na sua satisfação.'}
                     </p>
                 </AnimatedSection>
 

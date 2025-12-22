@@ -3,11 +3,13 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown, MessageCircle } from 'lucide-react';
 import { useSiteImages } from '../lib/siteImages.jsx';
 import { useSiteSettings } from '../lib/siteSettings.jsx';
+import { useSiteContent } from '../lib/siteContent.jsx';
 
 const HeroSection = () => {
     const containerRef = useRef(null);
     const { images } = useSiteImages();
     const { settings } = useSiteSettings();
+    const { content } = useSiteContent();
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -147,8 +149,7 @@ const HeroSection = () => {
                         transition={{ delay: 1.2, duration: 0.8 }}
                         className="text-lg sm:text-xl text-white/90 mb-10 max-w-2xl mx-auto leading-relaxed"
                     >
-                        Harmonização Facial sem exageros e resultados naturais.
-                        Realce a sua beleza com técnicas avançadas e personalizadas.
+                        {content.hero_subtitle || 'Harmonização Facial sem exageros e resultados naturais. Realce a sua beleza com técnicas avançadas e personalizadas.'}
                     </motion.p>
 
                     {/* CTA Buttons */}
