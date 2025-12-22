@@ -16,7 +16,8 @@ import {
     User,
     ImagePlus,
     Bell,
-    Gift
+    Gift,
+    FileText
 } from 'lucide-react';
 
 const AdminLayout = () => {
@@ -32,6 +33,7 @@ const AdminLayout = () => {
     const navItems = [
         { name: 'Dashboard', path: '/admin', icon: LayoutDashboard, end: true },
         { name: 'Configurações', path: '/admin/settings', icon: Settings },
+        { name: 'Conteúdo do Site', path: '/admin/site-content', icon: FileText },
         { name: 'Serviços & Preços', path: '/admin/services', icon: DollarSign },
         { name: 'Imagens do Site', path: '/admin/site-images', icon: ImagePlus },
         { name: 'Galeria', path: '/admin/gallery', icon: Image },
