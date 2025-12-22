@@ -140,14 +140,16 @@ const Footer = () => {
                 {/* Google Maps */}
                 <div className="mt-12 rounded-2xl overflow-hidden shadow-lg">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3678.0!2d-47.2180!3d-23.0900!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8a9!2sRua%20Almirante%20Tamandar%C3%A9%2C%2054%20-%20Cidade%20Nova%20II%2C%20Indaiatuba%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1"
+                        src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(
+                            `${settings.address || 'Rua Almirante Tamandaré, 54'}, ${settings.neighborhood || 'Cidade Nova II'}, ${settings.city || 'Indaiatuba'} - ${settings.state || 'SP'}, Brasil`
+                        )}`}
                         width="100%"
                         height="300"
                         style={{ border: 0 }}
                         allowFullScreen=""
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
-                        title="Localização Dra. Paula Satoo"
+                        title={`Localização ${settings.business_name || 'Dra. Paula Satoo'}`}
                         className="grayscale hover:grayscale-0 transition-all duration-500"
                     />
                 </div>
