@@ -2,10 +2,12 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowDown, MessageCircle } from 'lucide-react';
 import { useSiteImages } from '../lib/siteImages.jsx';
+import { useSiteSettings } from '../lib/siteSettings.jsx';
 
 const HeroSection = () => {
     const containerRef = useRef(null);
     const { images } = useSiteImages();
+    const { settings } = useSiteSettings();
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -19,7 +21,7 @@ const HeroSection = () => {
 
     const handleWhatsAppClick = () => {
         const message = encodeURIComponent('Olá! Gostaria de agendar uma avaliação.');
-        window.open(`https://wa.me/5519990037678?text=${message}`, '_blank');
+        window.open(`https://wa.me/${settings.whatsapp || '5519990037678'}?text=${message}`, '_blank');
     };
 
     // Text reveal animation variants

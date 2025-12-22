@@ -1,7 +1,9 @@
 import { MapPin, Phone, Mail, Clock, Instagram, MessageCircle } from 'lucide-react';
+import { useSiteSettings } from '../lib/siteSettings.jsx';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
+    const { settings } = useSiteSettings();
 
     const quickLinks = [
         { name: 'Início', href: '#inicio' },
@@ -29,9 +31,9 @@ const Footer = () => {
                     <div className="lg:col-span-1">
                         <div className="mb-6">
                             <span className="font-serif text-3xl font-semibold text-gold">PS</span>
-                            <p className="text-xl font-serif mt-2">Dra. Paula Satoo</p>
+                            <p className="text-xl font-serif mt-2">{settings.business_name || 'Dra. Paula Satoo'}</p>
                             <p className="text-white/60 text-sm tracking-widest uppercase">
-                                Estética Avançada
+                                {settings.tagline || 'Estética Avançada'}
                             </p>
                         </div>
                         <p className="text-white/70 text-sm leading-relaxed mb-6">
@@ -42,7 +44,7 @@ const Footer = () => {
                         {/* Social Links */}
                         <div className="flex gap-3">
                             <a
-                                href="https://instagram.com/dra.paulasatoo"
+                                href={`https://instagram.com/${(settings.instagram || '@dra.paulasatoo').replace('@', '')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center 
@@ -52,7 +54,7 @@ const Footer = () => {
                                 <Instagram className="w-5 h-5" />
                             </a>
                             <a
-                                href="https://wa.me/5519990037678"
+                                href={`https://wa.me/${settings.whatsapp || '5519990037678'}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center 
@@ -111,24 +113,24 @@ const Footer = () => {
                             <li className="flex items-start gap-3">
                                 <MapPin className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
                                 <span className="text-white/70 text-sm">
-                                    Rua Almirante Tamandaré, 54<br />
-                                    Cidade Nova II, Indaiatuba - SP
+                                    {settings.address || 'Rua Almirante Tamandaré, 54'}<br />
+                                    {settings.neighborhood || 'Cidade Nova II'}, {settings.city || 'Indaiatuba'} - {settings.state || 'SP'}
                                 </span>
                             </li>
                             <li>
                                 <a
-                                    href="https://wa.me/5519990037678"
+                                    href={`https://wa.me/${settings.whatsapp || '5519990037678'}`}
                                     className="flex items-center gap-3 text-white/70 hover:text-white transition-colors"
                                 >
                                     <Phone className="w-5 h-5 text-gold flex-shrink-0" />
-                                    <span className="text-sm">(19) 99003-7678</span>
+                                    <span className="text-sm">{settings.phone || '(19) 99003-7678'}</span>
                                 </a>
                             </li>
                             <li className="flex items-start gap-3">
                                 <Clock className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
                                 <span className="text-white/70 text-sm">
-                                    Seg - Sex: 9h às 20h<br />
-                                    Sábado: 9h às 14h
+                                    {settings.hours_weekdays || 'Seg - Sex: 9h às 20h'}<br />
+                                    {settings.hours_saturday || 'Sábado: 9h às 14h'}
                                 </span>
                             </li>
                         </ul>

@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
+import { useSiteSettings } from '../lib/siteSettings.jsx';
 
 const WhatsAppButton = () => {
+    const { settings } = useSiteSettings();
+
     const handleClick = () => {
         const message = encodeURIComponent('Olá! Gostaria de saber mais sobre os tratamentos.');
-        window.open(`https://wa.me/5519990037678?text=${message}`, '_blank');
+        window.open(`https://wa.me/${settings.whatsapp || '5519990037678'}?text=${message}`, '_blank');
     };
 
     return (

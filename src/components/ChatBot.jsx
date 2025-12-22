@@ -1,23 +1,29 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
+import { useSiteSettings } from '../lib/siteSettings.jsx';
 
 const ChatBot = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const { settings } = useSiteSettings();
+
     const [messages, setMessages] = useState([
         {
             id: 1,
             type: 'bot',
-            text: 'Olá! 👋 Sou a assistente virtual da Dra. Paula Satoo. Como posso ajudar você hoje?',
+            text: `Olá! 👋 Sou a assistente virtual da ${settings.business_name || 'Dra. Paula Satoo'}. Como posso ajudar você hoje?`,
         },
     ]);
     const [inputValue, setInputValue] = useState('');
+
+    // Construir endereço completo
+    const fullAddress = `${settings.address || 'Rua Almirante Tamandaré, 54'} - ${settings.neighborhood || 'Cidade Nova II'}, ${settings.city || 'Indaiatuba'} - ${settings.state || 'SP'}`;
 
     const quickReplies = [
         { text: 'Quero agendar', response: 'Ótimo! Para agendar sua avaliação, você pode clicar no botão abaixo para falar diretamente pelo WhatsApp com nossa equipe. Elas vão encontrar o melhor horário para você! 📅' },
         { text: 'Preços', response: 'Os valores variam de acordo com cada procedimento e são personalizados após a avaliação. Agende uma consulta sem compromisso para receber um orçamento personalizado! 💫' },
         { text: 'Procedimentos', response: 'Oferecemos diversos tratamentos: Harmonização Facial, Preenchimento Labial, Bioestimuladores, Toxina Botulínica, Skinbooster, Microagulhamento e mais! Qual te interessa? ✨' },
-        { text: 'Localização', response: 'Estamos na Rua Almirante Tamandaré, 54 - Cidade Nova II, Indaiatuba - SP. Fácil acesso e estacionamento próximo! 📍' },
+        { text: 'Localização', response: `Estamos na ${fullAddress}. Fácil acesso e estacionamento próximo! 📍` },
     ];
 
     const handleQuickReply = (reply) => {
@@ -161,7 +167,7 @@ const ChatBot = () => {
 
                             {/* WhatsApp CTA */}
                             <a
-                                href="https://wa.me/5519990037678"
+                                href={`https://wa.me/${settings.whatsapp || '5519990037678'}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="mt-3 w-full py-2 bg-green-500 text-white text-sm font-medium 
