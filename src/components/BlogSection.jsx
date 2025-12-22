@@ -1,14 +1,17 @@
 import { motion } from 'framer-motion';
 import AnimatedSection from './AnimatedSection';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import { useSiteImages } from '../lib/siteImages.jsx';
 
 const BlogSection = () => {
+    const { images } = useSiteImages();
+
     const posts = [
         {
             id: 1,
             title: 'Cuidados essenciais com a pele no verão',
             excerpt: 'Descubra como proteger e hidratar sua pele durante os dias mais quentes do ano.',
-            image: '/images/dra.paulasatoo-20251210-0036.jpg',
+            image: images['blog-1'] || '/images/dra.paulasatoo-20251210-0036.jpg',
             category: 'Skincare',
             date: '10 Dez 2024',
             readTime: '5 min',
@@ -17,7 +20,7 @@ const BlogSection = () => {
             id: 2,
             title: 'Harmonização Facial: o que você precisa saber',
             excerpt: 'Tudo sobre o procedimento que realça sua beleza natural de forma equilibrada.',
-            image: '/images/dra.paulasatoo-20251210-0037.jpg',
+            image: images['blog-2'] || '/images/dra.paulasatoo-20251210-0037.jpg',
             category: 'Procedimentos',
             date: '05 Dez 2024',
             readTime: '7 min',
@@ -26,7 +29,7 @@ const BlogSection = () => {
             id: 3,
             title: 'Bioestimuladores: a revolução do rejuvenescimento',
             excerpt: 'Entenda como os bioestimuladores de colágeno podem transformar sua pele.',
-            image: '/images/dra.paulasatoo-20251210-0038.jpg',
+            image: images['blog-3'] || '/images/dra.paulasatoo-20251210-0038.jpg',
             category: 'Tratamentos',
             date: '28 Nov 2024',
             readTime: '6 min',

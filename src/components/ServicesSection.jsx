@@ -10,63 +10,66 @@ import {
     Flower2,
     Users
 } from 'lucide-react';
+import { useSiteImages } from '../lib/siteImages.jsx';
 
 const ServicesSection = () => {
+    const { images } = useSiteImages();
+
     const services = [
         {
             icon: Sparkles,
             title: 'Harmonização Facial',
             description: 'Técnicas avançadas para realçar seus traços naturais, sem exageros. Equilíbrio e proporção para uma beleza autêntica.',
-            image: '/images/dra.paulasatoo-20251210-0010.jpg',
+            image: images['service-1'] || '/images/dra.paulasatoo-20251210-0010.jpg',
             tags: ['Natural', 'Personalizado'],
         },
         {
             icon: Heart,
             title: 'Preenchimento Labial',
             description: 'Lábios mais definidos e harmoniosos. Do sutil ao marcante, respeitando suas características únicas.',
-            image: '/images/dra.paulasatoo-20251210-0015.jpg',
+            image: images['service-2'] || '/images/dra.paulasatoo-20251210-0015.jpg',
             tags: ['Volume', 'Contorno', 'Hidratação'],
         },
         {
             icon: Zap,
             title: 'Bioestimuladores',
             description: 'A evolução da sua pele. Tratamento com Elleva para estímulo natural do colágeno e rejuvenescimento profundo.',
-            image: '/images/dra.paulasatoo-20251210-0020.jpg',
+            image: images['service-3'] || '/images/dra.paulasatoo-20251210-0020.jpg',
             tags: ['Elleva', 'Colágeno'],
         },
         {
             icon: Syringe,
             title: 'Toxina Botulínica',
             description: 'Suavize linhas de expressão com naturalidade. Tratamento preventivo e corretivo para uma pele mais jovem.',
-            image: '/images/dra.paulasatoo-20251210-0025.jpg',
+            image: images['service-4'] || '/images/dra.paulasatoo-20251210-0025.jpg',
             tags: ['Botox', 'Prevenção'],
         },
         {
             icon: Droplets,
             title: 'Skinbooster',
             description: 'Devolve viço e hidratação à sua pele. Tratamento intensivo para uma pele mais luminosa e saudável.',
-            image: '/images/dra.paulasatoo-20251210-0035.jpg',
+            image: images['service-5'] || '/images/dra.paulasatoo-20251210-0035.jpg',
             tags: ['Hidratação', 'Viço'],
         },
         {
             icon: CircleDot,
             title: 'Microagulhamento',
             description: 'Renovação celular para tratamento de cicatrizes, manchas e rejuvenescimento facial completo.',
-            image: '/images/dra.paulasatoo-20251210-0012.jpg',
+            image: images['service-6'] || '/images/dra.paulasatoo-20251210-0012.jpg',
             tags: ['Cicatrizes', 'Manchas'],
         },
         {
             icon: Flower2,
             title: 'Hidragloss',
             description: 'Tratamento exclusivo de hidratação labial. Lábios mais macios, hidratados e com brilho natural.',
-            image: '/images/dra.paulasatoo-20251210-0017.jpg',
+            image: images['service-7'] || '/images/dra.paulasatoo-20251210-0017.jpg',
             tags: ['Hidratação', 'Brilho'],
         },
         {
             icon: Users,
             title: 'Corporal',
             description: 'Massagem Detox e Drenagem Linfática especializada, incluindo atendimento para gestantes.',
-            image: '/images/dra.paulasatoo-20251210-0028.jpg',
+            image: images['service-8'] || '/images/dra.paulasatoo-20251210-0028.jpg',
             tags: ['Detox', 'Gestantes'],
         },
     ];

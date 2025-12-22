@@ -1,18 +1,21 @@
 import { motion } from 'framer-motion';
 import AnimatedSection from './AnimatedSection';
 import { Instagram, ExternalLink } from 'lucide-react';
+import { useSiteImages } from '../lib/siteImages.jsx';
 
 const InstagramSection = () => {
+    const { images } = useSiteImages();
+
     // Using images from the project folder as Instagram posts
     const instagramPosts = [
-        { id: 1, image: '/images/dra.paulasatoo-20251210-0001.jpg', alt: 'Post 1' },
-        { id: 2, image: '/images/dra.paulasatoo-20251210-0003.jpg', alt: 'Post 2' },
-        { id: 3, image: '/images/dra.paulasatoo-20251210-0006.jpg', alt: 'Post 3' },
-        { id: 4, image: '/images/dra.paulasatoo-20251210-0008.jpg', alt: 'Post 4' },
-        { id: 5, image: '/images/dra.paulasatoo-20251210-0011.jpg', alt: 'Post 5' },
-        { id: 6, image: '/images/dra.paulasatoo-20251210-0014.jpg', alt: 'Post 6' },
-        { id: 7, image: '/images/dra.paulasatoo-20251210-0018.jpg', alt: 'Post 7' },
-        { id: 8, image: '/images/dra.paulasatoo-20251210-0021.jpg', alt: 'Post 8' },
+        { id: 1, image: images['instagram-1'] || '/images/dra.paulasatoo-20251210-0001.jpg', alt: 'Post 1' },
+        { id: 2, image: images['instagram-2'] || '/images/dra.paulasatoo-20251210-0003.jpg', alt: 'Post 2' },
+        { id: 3, image: images['instagram-3'] || '/images/dra.paulasatoo-20251210-0006.jpg', alt: 'Post 3' },
+        { id: 4, image: images['instagram-4'] || '/images/dra.paulasatoo-20251210-0008.jpg', alt: 'Post 4' },
+        { id: 5, image: images['instagram-5'] || '/images/dra.paulasatoo-20251210-0011.jpg', alt: 'Post 5' },
+        { id: 6, image: images['instagram-6'] || '/images/dra.paulasatoo-20251210-0014.jpg', alt: 'Post 6' },
+        { id: 7, image: images['instagram-7'] || '/images/dra.paulasatoo-20251210-0018.jpg', alt: 'Post 7' },
+        { id: 8, image: images['instagram-8'] || '/images/dra.paulasatoo-20251210-0021.jpg', alt: 'Post 8' },
     ];
 
     return (

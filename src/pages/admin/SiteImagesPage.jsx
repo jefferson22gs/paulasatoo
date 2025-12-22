@@ -11,108 +11,36 @@ import {
     Trash2
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { getImageConfig } from '../../lib/siteImages.jsx';
 
 const SiteImagesPage = () => {
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
-    const [replacingId, setReplacingId] = useState(null);
     const [imageUrls, setImageUrls] = useState({});
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
     const fileInputRef = useRef(null);
 
-    // Define the site images that can be managed
-    const siteImages = [
-        {
-            id: 'hero',
-            name: 'Imagem Principal (Hero)',
-            description: 'Imagem de destaque no topo do site',
-            defaultPath: '/images/dra.paulasatoo-20251210-0005.jpg',
-            storagePath: 'hero.jpg',
-            section: 'hero'
-        },
-        {
-            id: 'about',
-            name: 'Foto da Dra. Paula',
-            description: 'Foto usada na seção "Sobre"',
-            defaultPath: '/images/dra.paulasatoo-20251210-0001.jpg',
-            storagePath: 'about.jpg',
-            section: 'about'
-        },
-        {
-            id: 'before-after-1',
-            name: 'Antes e Depois 1',
-            description: 'Primeira imagem de resultado',
-            defaultPath: '/images/dra.paulasatoo-20251210-0002.jpg',
-            storagePath: 'before-after-1.jpg',
-            section: 'results'
-        },
-        {
-            id: 'before-after-2',
-            name: 'Antes e Depois 2',
-            description: 'Segunda imagem de resultado',
-            defaultPath: '/images/dra.paulasatoo-20251210-0003.jpg',
-            storagePath: 'before-after-2.jpg',
-            section: 'results'
-        },
-        {
-            id: 'before-after-3',
-            name: 'Antes e Depois 3',
-            description: 'Terceira imagem de resultado',
-            defaultPath: '/images/dra.paulasatoo-20251210-0004.jpg',
-            storagePath: 'before-after-3.jpg',
-            section: 'results'
-        },
-        {
-            id: 'clinic-1',
-            name: 'Foto da Clínica 1',
-            description: 'Ambiente da clínica',
-            defaultPath: '/images/dra.paulasatoo-20251210-0006.jpg',
-            storagePath: 'clinic-1.jpg',
-            section: 'clinic'
-        },
-        {
-            id: 'clinic-2',
-            name: 'Foto da Clínica 2',
-            description: 'Sala de procedimentos',
-            defaultPath: '/images/dra.paulasatoo-20251210-0007.jpg',
-            storagePath: 'clinic-2.jpg',
-            section: 'clinic'
-        },
-        {
-            id: 'procedure-1',
-            name: 'Procedimento 1',
-            description: 'Imagem de procedimento',
-            defaultPath: '/images/dra.paulasatoo-20251210-0008.jpg',
-            storagePath: 'procedure-1.jpg',
-            section: 'procedures'
-        },
-        {
-            id: 'procedure-2',
-            name: 'Procedimento 2',
-            description: 'Imagem de procedimento',
-            defaultPath: '/images/dra.paulasatoo-20251210-0009.jpg',
-            storagePath: 'procedure-2.jpg',
-            section: 'procedures'
-        },
-        {
-            id: 'procedure-3',
-            name: 'Procedimento 3',
-            description: 'Imagem de procedimento',
-            defaultPath: '/images/dra.paulasatoo-20251210-0010.jpg',
-            storagePath: 'procedure-3.jpg',
-            section: 'procedures'
-        }
-    ];
+    // Obter configuração de imagens centralizada
+    const IMAGE_CONFIG = getImageConfig();
+
+    // Converter config para array para exibição
+    const siteImages = Object.entries(IMAGE_CONFIG).map(([id, config]) => ({
+        id,
+        ...config
+    }));
 
     const sections = [
         { id: 'hero', name: 'Principal' },
         { id: 'about', name: 'Sobre' },
+        { id: 'services', name: 'Serviços' },
         { id: 'results', name: 'Resultados' },
-        { id: 'clinic', name: 'Clínica' },
-        { id: 'procedures', name: 'Procedimentos' }
+        { id: 'testimonials', name: 'Depoimentos' },
+        { id: 'videos', name: 'Vídeos' },
+        { id: 'instagram', name: 'Instagram' },
+        { id: 'blog', name: 'Blog' }
     ];
 
     const [activeSection, setActiveSection] = useState('all');
@@ -142,10 +70,10 @@ const SiteImagesPage = () => {
                     try {
                         const response = await fetch(data.publicUrl, { method: 'HEAD' });
                         if (response.ok) {
-                            urls[image.id] = data.publicUrl + '?t=' + Date.now(); // Cache bust
+                            urls[image.id] = data.publicUrl + '?t=' + Date.now();
                         }
                     } catch (e) {
-                        // Imagem não existe no Storage, usar padrão
+                        // Imagem não existe no Storage
                     }
                 }
             }
@@ -194,7 +122,7 @@ const SiteImagesPage = () => {
                 .from('site-images')
                 .upload(selectedImage.storagePath, file, {
                     cacheControl: '3600',
-                    upsert: true // Substituir se já existir
+                    upsert: true
                 });
 
             if (error) {
@@ -212,7 +140,7 @@ const SiteImagesPage = () => {
                 [selectedImage.id]: urlData.publicUrl + '?t=' + Date.now()
             }));
 
-            // Salvar referência no banco de dados (tabela settings)
+            // Salvar referência no banco de dados
             await supabase.from('settings').upsert({
                 key: `image_${selectedImage.id}`,
                 value: urlData.publicUrl,
@@ -224,7 +152,6 @@ const SiteImagesPage = () => {
             setSelectedImage(null);
             setPreviewUrl(null);
 
-            // Limpar input
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
@@ -232,7 +159,6 @@ const SiteImagesPage = () => {
         } catch (error) {
             console.error('Error uploading image:', error);
 
-            // Mensagem de erro mais amigável
             if (error.message?.includes('Bucket not found')) {
                 setMessage({
                     type: 'error',
@@ -263,14 +189,12 @@ const SiteImagesPage = () => {
 
             if (error) throw error;
 
-            // Remover da lista local
             setImageUrls(prev => {
                 const newUrls = { ...prev };
                 delete newUrls[image.id];
                 return newUrls;
             });
 
-            // Remover do banco
             await supabase.from('settings')
                 .delete()
                 .eq('key', `image_${image.id}`);
@@ -291,13 +215,21 @@ const SiteImagesPage = () => {
         return imageUrls[image.id] || image.defaultPath;
     };
 
+    // Contar imagens por seção
+    const sectionCounts = sections.reduce((acc, section) => {
+        acc[section.id] = siteImages.filter(img => img.section === section.id).length;
+        return acc;
+    }, {});
+
     return (
         <div className="space-y-8">
             {/* Header */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl lg:text-3xl font-bold text-charcoal">Imagens do Site</h1>
-                    <p className="text-charcoal/60 mt-1">Visualize e gerencie as imagens utilizadas no site</p>
+                    <p className="text-charcoal/60 mt-1">
+                        {siteImages.length} imagens no total • {Object.keys(imageUrls).length} customizadas
+                    </p>
                 </div>
                 <button
                     onClick={loadImageUrls}
@@ -346,7 +278,7 @@ const SiteImagesPage = () => {
                             : 'bg-white border border-gray-200 text-charcoal/70 hover:border-sage/50'
                         }`}
                 >
-                    Todas
+                    Todas ({siteImages.length})
                 </button>
                 {sections.map(section => (
                     <button
@@ -357,13 +289,13 @@ const SiteImagesPage = () => {
                                 : 'bg-white border border-gray-200 text-charcoal/70 hover:border-sage/50'
                             }`}
                     >
-                        {section.name}
+                        {section.name} ({sectionCounts[section.id] || 0})
                     </button>
                 ))}
             </div>
 
             {/* Images Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filteredImages.map((image) => (
                     <motion.div
                         key={image.id}
@@ -391,42 +323,45 @@ const SiteImagesPage = () => {
                             )}
 
                             {/* Overlay with actions */}
-                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100">
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
                                 <button
                                     onClick={() => handleViewImage(image)}
-                                    className="p-3 bg-white rounded-full text-charcoal hover:bg-gray-100 transition-colors"
+                                    className="p-2 bg-white rounded-full text-charcoal hover:bg-gray-100 transition-colors"
                                     title="Ver imagem"
                                 >
-                                    <Eye className="w-5 h-5" />
+                                    <Eye className="w-4 h-4" />
                                 </button>
                                 <button
                                     onClick={() => handleReplace(image)}
-                                    className="p-3 bg-sage text-white rounded-full hover:bg-sage-dark transition-colors"
+                                    className="p-2 bg-sage text-white rounded-full hover:bg-sage-dark transition-colors"
                                     title="Substituir imagem"
                                 >
-                                    <Upload className="w-5 h-5" />
+                                    <Upload className="w-4 h-4" />
                                 </button>
                                 {imageUrls[image.id] && (
                                     <button
                                         onClick={() => handleDeleteFromStorage(image)}
-                                        className="p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                                        className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
                                         title="Restaurar imagem padrão"
                                     >
-                                        <Trash2 className="w-5 h-5" />
+                                        <Trash2 className="w-4 h-4" />
                                     </button>
                                 )}
                             </div>
                         </div>
 
                         {/* Image Info */}
-                        <div className="p-4">
-                            <h3 className="font-medium text-charcoal">{image.name}</h3>
-                            <p className="text-sm text-charcoal/60 mt-1">{image.description}</p>
-                            <div className="mt-3 flex items-center justify-between">
-                                <span className="text-xs text-charcoal/40 truncate max-w-[70%]">
+                        <div className="p-3">
+                            <h3 className="font-medium text-charcoal text-sm truncate">{image.name}</h3>
+                            <p className="text-xs text-charcoal/60 mt-0.5 truncate">{image.description}</p>
+                            <div className="mt-2 flex items-center justify-between">
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${imageUrls[image.id]
+                                        ? 'bg-green-100 text-green-700'
+                                        : 'bg-gray-100 text-charcoal/50'
+                                    }`}>
                                     {imageUrls[image.id] ? 'Storage' : 'Padrão'}
                                 </span>
-                                <span className="px-2 py-1 bg-gray-100 text-charcoal/60 text-xs rounded-full">
+                                <span className="px-2 py-0.5 bg-sage/10 text-sage text-xs rounded-full">
                                     {sections.find(s => s.id === image.section)?.name}
                                 </span>
                             </div>
@@ -454,9 +389,12 @@ const SiteImagesPage = () => {
                         >
                             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
                                 <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-                                    <h2 className="text-xl font-bold text-charcoal">
-                                        Substituir: {selectedImage.name}
-                                    </h2>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-charcoal">
+                                            Substituir Imagem
+                                        </h2>
+                                        <p className="text-sm text-charcoal/60">{selectedImage.name}</p>
+                                    </div>
                                     <button
                                         onClick={() => setShowUploadModal(false)}
                                         className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

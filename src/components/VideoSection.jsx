@@ -1,30 +1,33 @@
 import { motion } from 'framer-motion';
 import AnimatedSection from './AnimatedSection';
 import { Play, Instagram } from 'lucide-react';
+import { useSiteImages } from '../lib/siteImages.jsx';
 
 const VideoSection = () => {
+    const { images } = useSiteImages();
+
     const videos = [
         {
             id: 1,
-            thumbnail: '/images/dra.paulasatoo-20251210-0002.jpg',
+            thumbnail: images['video-1'] || '/images/dra.paulasatoo-20251210-0002.jpg',
             title: 'Harmonização Natural',
             views: '15K',
         },
         {
             id: 2,
-            thumbnail: '/images/dra.paulasatoo-20251210-0004.jpg',
+            thumbnail: images['video-2'] || '/images/dra.paulasatoo-20251210-0004.jpg',
             title: 'Preenchimento Labial',
             views: '12K',
         },
         {
             id: 3,
-            thumbnail: '/images/dra.paulasatoo-20251210-0007.jpg',
+            thumbnail: images['video-3'] || '/images/dra.paulasatoo-20251210-0007.jpg',
             title: 'Bioestimuladores - Antes e Depois',
             views: '20K',
         },
         {
             id: 4,
-            thumbnail: '/images/dra.paulasatoo-20251210-0009.jpg',
+            thumbnail: images['video-4'] || '/images/dra.paulasatoo-20251210-0009.jpg',
             title: 'Dicas de Skincare',
             views: '8K',
         },

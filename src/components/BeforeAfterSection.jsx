@@ -2,34 +2,36 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedSection from './AnimatedSection';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useSiteImages } from '../lib/siteImages.jsx';
 
 const BeforeAfterSection = () => {
     const [sliderPosition, setSliderPosition] = useState(50);
     const [activeIndex, setActiveIndex] = useState(0);
     const containerRef = useRef(null);
     const isDragging = useRef(false);
+    const { images } = useSiteImages();
 
     const comparisons = [
         {
             id: 1,
             title: 'Harmonização Facial',
             description: 'Resultado natural e harmonioso',
-            before: '/images/dra.paulasatoo-20251210-0022.jpg',
-            after: '/images/dra.paulasatoo-20251210-0023.jpg',
+            before: images['before-after-1-before'] || '/images/dra.paulasatoo-20251210-0022.jpg',
+            after: images['before-after-1-after'] || '/images/dra.paulasatoo-20251210-0023.jpg',
         },
         {
             id: 2,
             title: 'Preenchimento Labial',
             description: 'Volume e definição equilibrados',
-            before: '/images/dra.paulasatoo-20251210-0024.jpg',
-            after: '/images/dra.paulasatoo-20251210-0025.jpg',
+            before: images['before-after-2-before'] || '/images/dra.paulasatoo-20251210-0024.jpg',
+            after: images['before-after-2-after'] || '/images/dra.paulasatoo-20251210-0025.jpg',
         },
         {
             id: 3,
             title: 'Bioestimuladores',
             description: 'Rejuvenescimento progressivo',
-            before: '/images/dra.paulasatoo-20251210-0026.jpg',
-            after: '/images/dra.paulasatoo-20251210-0027.jpg',
+            before: images['before-after-3-before'] || '/images/dra.paulasatoo-20251210-0026.jpg',
+            after: images['before-after-3-after'] || '/images/dra.paulasatoo-20251210-0027.jpg',
         },
     ];
 
@@ -175,8 +177,8 @@ const BeforeAfterSection = () => {
                                 key={index}
                                 onClick={() => { setActiveIndex(index); setSliderPosition(50); }}
                                 className={`w-2 h-2 rounded-full transition-all ${index === activeIndex
-                                        ? 'w-8 bg-gold'
-                                        : 'bg-charcoal/20 dark:bg-white/20 hover:bg-charcoal/40'
+                                    ? 'w-8 bg-gold'
+                                    : 'bg-charcoal/20 dark:bg-white/20 hover:bg-charcoal/40'
                                     }`}
                                 aria-label={`Ir para comparação ${index + 1}`}
                             />

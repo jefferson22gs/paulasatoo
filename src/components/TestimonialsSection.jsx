@@ -2,17 +2,19 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedSection from './AnimatedSection';
 import { Quote, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { useSiteImages } from '../lib/siteImages.jsx';
 
 const TestimonialsSection = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(0);
+    const { images } = useSiteImages();
 
     const testimonials = [
         {
             id: 1,
             name: 'Maria Clara S.',
             treatment: 'Harmonização Facial',
-            image: '/images/dra.paulasatoo-20251210-0031.jpg',
+            image: images['testimonial-1'] || '/images/dra.paulasatoo-20251210-0031.jpg',
             rating: 5,
             text: 'Resultado incrível e super natural! A Dra. Paula tem mãos de fada e entendeu exatamente o que eu queria. Me sinto mais confiante e bonita.',
         },
@@ -20,7 +22,7 @@ const TestimonialsSection = () => {
             id: 2,
             name: 'Juliana M.',
             treatment: 'Preenchimento Labial',
-            image: '/images/dra.paulasatoo-20251210-0032.jpg',
+            image: images['testimonial-2'] || '/images/dra.paulasatoo-20251210-0032.jpg',
             rating: 5,
             text: 'Sempre tive medo de procedimentos estéticos, mas a Dra. Paula me deixou super tranquila. O resultado ficou lindo e natural, exatamente como eu sonhava!',
         },
@@ -28,7 +30,7 @@ const TestimonialsSection = () => {
             id: 3,
             name: 'Fernanda R.',
             treatment: 'Bioestimuladores',
-            image: '/images/dra.paulasatoo-20251210-0033.jpg',
+            image: images['testimonial-3'] || '/images/dra.paulasatoo-20251210-0033.jpg',
             rating: 5,
             text: 'Fiz bioestimuladores e estou amando o resultado! Minha pele está muito mais firme e com viço. Atendimento impecável do início ao fim.',
         },
@@ -36,7 +38,7 @@ const TestimonialsSection = () => {
             id: 4,
             name: 'Carolina T.',
             treatment: 'Skinbooster',
-            image: '/images/dra.paulasatoo-20251210-0034.jpg',
+            image: images['testimonial-4'] || '/images/dra.paulasatoo-20251210-0034.jpg',
             rating: 5,
             text: 'A hidratação profunda do Skinbooster transformou minha pele. Nunca esteve tão bonita! Recomendo demais a Dra. Paula.',
         },
@@ -165,8 +167,8 @@ const TestimonialsSection = () => {
                                     key={index}
                                     onClick={() => { setDirection(index > activeIndex ? 1 : -1); setActiveIndex(index); }}
                                     className={`w-2 h-2 rounded-full transition-all ${index === activeIndex
-                                            ? 'w-8 bg-gold'
-                                            : 'bg-charcoal/20 dark:bg-white/20 hover:bg-charcoal/40'
+                                        ? 'w-8 bg-gold'
+                                        : 'bg-charcoal/20 dark:bg-white/20 hover:bg-charcoal/40'
                                         }`}
                                     aria-label={`Ir para depoimento ${index + 1}`}
                                 />
