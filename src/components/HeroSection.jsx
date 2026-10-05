@@ -44,13 +44,12 @@ const HeroSection = () => {
         },
     };
 
-    // Textos editáveis via admin
-    const fullTitle = content.hero_title || 'Transformando beleza em confiança';
-    // Dividir o título em 3 partes: antes, destaque (itálico), depois
-    const titleParts = fullTitle.split(/\*(.*?)\*/); // Usa *texto* para destacar
-    const headlineText = titleParts[0] || 'Transformando ';
-    const highlightText = titleParts[1] || 'beleza';
-    const endText = titleParts[2] || ' em confiança';
+    // Textos editáveis via admin. Usa *texto* para destacar em dourado (opcional).
+    const fullTitle = content.hero_title || 'Dra. Paula Satoo';
+    // split com grupo de captura: índices ímpares são os trechos destacados
+    const titleParts = fullTitle.split(/\*(.*?)\*/)
+        .map((text, i) => ({ text: text.trim(), highlight: i % 2 === 1 }))
+        .filter(part => part.text);
 
     return (
         <section
@@ -119,31 +118,25 @@ const HeroSection = () => {
                     </motion.p>
 
                     {/* Animated Headline */}
-                    <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white mb-6 leading-tight overflow-hidden">
-                        <motion.span className="inline-block" variants={containerVariants}>
-                            {headlineText.split('').map((letter, i) => (
-                                <motion.span key={i} variants={letterVariants} className="inline-block">
-                                    {letter}
-                                </motion.span>
-                            ))}
-                        </motion.span>{' '}
-                        <motion.span
-                            className="inline-block text-gold"
-                            variants={containerVariants}
-                        >
-                            {highlightText.split('').map((letter, i) => (
-                                <motion.span key={i} variants={letterVariants} className="inline-block">
-                                    {letter}
-                                </motion.span>
-                            ))}
-                        </motion.span>{' '}
-                        <motion.span className="inline-block" variants={containerVariants}>
-                            {endText.split('').map((letter, i) => (
-                                <motion.span key={i} variants={letterVariants} className="inline-block">
-                                    {letter === ' ' ? '\u00A0' : letter}
-                                </motion.span>
-                            ))}
-                        </motion.span>
+                    <h1
+                        aria-label={titleParts.map(p => p.text).join(' ')}
+                        className="font-serif text-[2.5rem] leading-[1.1] sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-white mb-6 overflow-hidden text-balance"
+                    >
+                        {/* Palavras n\u00E3o quebram no meio; a quebra ocorre s\u00F3 entre palavras */}
+                        {titleParts.flatMap((part, p) => part.text.split(' ').map((word, w) => (
+                            <motion.span
+                                key={`${p}-${w}`}
+                                aria-hidden="true"
+                                className={`inline-block whitespace-nowrap mx-[0.12em] ${part.highlight ? 'text-gold' : ''}`}
+                                variants={containerVariants}
+                            >
+                                {word.split('').map((letter, i) => (
+                                    <motion.span key={i} variants={letterVariants} className="inline-block">
+                                        {letter}
+                                    </motion.span>
+                                ))}
+                            </motion.span>
+                        )))}
                     </h1>
 
                     {/* Subtitle */}

@@ -5,6 +5,7 @@ import {
     CheckCircle, AlertCircle, RefreshCw, Star, Play, ExternalLink
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { getInstagramEmbedUrl } from '../../lib/instagram';
 
 const VideosPage = () => {
     const [videos, setVideos] = useState([]);
@@ -62,6 +63,10 @@ const VideosPage = () => {
     const handleSave = async () => {
         if (!formData.title || !formData.youtube_url) {
             setMessage({ type: 'error', text: 'Título e URL são obrigatórios' });
+            return;
+        }
+        if (!getInstagramEmbedUrl(formData.youtube_url)) {
+            setMessage({ type: 'error', text: 'Informe o link de um Reel ou post do Instagram (ex.: https://www.instagram.com/reel/...)' });
             return;
         }
         setSaving(true);
@@ -263,12 +268,12 @@ const VideosPage = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-charcoal/70 mb-1">URL do YouTube *</label>
+                                    <label className="block text-sm font-medium text-charcoal/70 mb-1">Link do Reel no Instagram *</label>
                                     <input
                                         type="text"
                                         value={formData.youtube_url}
                                         onChange={(e) => setFormData({ ...formData, youtube_url: e.target.value })}
-                                        placeholder="https://www.youtube.com/watch?v=..."
+                                        placeholder="https://www.instagram.com/reel/..."
                                         className="w-full px-4 py-2 border-2 border-gray-100 rounded-xl focus:border-sage outline-none"
                                     />
                                 </div>

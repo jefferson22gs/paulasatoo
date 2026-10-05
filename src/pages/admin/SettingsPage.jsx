@@ -12,13 +12,14 @@ import {
     AlertCircle
 } from 'lucide-react';
 import { getSettings, updateSetting } from '../../lib/supabase';
+import { DEFAULT_ADDRESS, dropLegacy, LEGACY_SETTINGS } from '../../lib/siteDefaults';
 
 const SettingsPage = () => {
     const [settings, setSettings] = useState({
         clinic_name: 'Dra. Paula Satoo - Estética Avançada',
-        address: 'Rua Almirante Tamandaré, 54',
+        address: DEFAULT_ADDRESS.address,
         city: 'Indaiatuba - SP',
-        postal_code: '13334-100',
+        postal_code: '',
         phone: '(19) 99003-7678',
         whatsapp: '5519990037678',
         email: 'contato@drapaulasatoo.com.br',
@@ -41,7 +42,8 @@ const SettingsPage = () => {
         try {
             const data = await getSettings();
             if (Object.keys(data).length > 0) {
-                setSettings(prev => ({ ...prev, ...data }));
+                // Endereço antigo é substituído pelo novo; basta clicar em Salvar para gravar no banco
+                setSettings(prev => ({ ...prev, ...dropLegacy(data, LEGACY_SETTINGS) }));
             }
         } catch (error) {
             console.error('Error loading settings:', error);

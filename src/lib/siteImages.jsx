@@ -1,7 +1,25 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { supabase } from './supabase';
 
-// Mapeamento COMPLETO de todas as imagens do site
+// Mapeamento de todas as imagens editáveis do site.
+// storagePath com sufixo "-v2": arquivos antigos do Storage (service-N.jpg, about.jpg)
+// tinham fotos desatualizadas; novos uploads pelo Admin usam estes caminhos.
+const service = (n, title, file) => ({
+    storagePath: `service-${n}-v2.jpg`,
+    defaultPath: `/images/tratamentos/${file}`,
+    name: `Serviço ${n} - ${title}`,
+    description: `Foto do cartão "${title}"`,
+    section: 'services'
+});
+
+const result = (n, title, file) => ({
+    storagePath: `result-${n}.jpg`,
+    defaultPath: `/images/resultados/${file}`,
+    name: `Resultado ${n} - ${title}`,
+    description: 'Foto da galeria de resultados',
+    section: 'results'
+});
+
 const IMAGE_CONFIG = {
     // HERO - Imagem principal
     hero: {
@@ -11,262 +29,50 @@ const IMAGE_CONFIG = {
         description: 'Imagem de destaque no topo do site',
         section: 'hero'
     },
-    // ABOUT - Seção Sobre
+    // ABOUT - Seção Sobre mim
     about: {
-        storagePath: 'about.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0030.jpg',
+        storagePath: 'about-v2.jpg',
+        defaultPath: '/images/dra-paula-satoo-retrato.jpg',
         name: 'Foto da Dra. Paula',
-        description: 'Foto usada na seção "Sobre"',
+        description: 'Retrato usado na seção "Sobre mim"',
         section: 'about'
     },
-    // SERVICES - Seção de Serviços
-    'service-1': {
-        storagePath: 'service-1.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0010.jpg',
-        name: 'Serviço 1 - Harmonização Facial',
-        description: 'Imagem do serviço de harmonização',
-        section: 'services'
-    },
-    'service-2': {
-        storagePath: 'service-2.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0015.jpg',
-        name: 'Serviço 2 - Botox',
-        description: 'Imagem do serviço de botox',
-        section: 'services'
-    },
-    'service-3': {
-        storagePath: 'service-3.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0020.jpg',
-        name: 'Serviço 3 - Preenchimento',
-        description: 'Imagem do serviço de preenchimento',
-        section: 'services'
-    },
-    'service-4': {
-        storagePath: 'service-4.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0025.jpg',
-        name: 'Serviço 4 - Lábios',
-        description: 'Imagem do serviço de lábios',
-        section: 'services'
-    },
+    // SERVICES - mesma ordem dos cartões em ServicesSection
+    'service-1': service(1, 'Harmonização Facial', 'harmonizacao-facial.jpg'),
+    'service-2': service(2, 'Preenchimento Labial', 'preenchimento-labial.jpg'),
+    'service-3': service(3, 'Bioestimuladores', 'bioestimulador.jpg'),
+    'service-4': service(4, 'Toxina Botulínica', 'toxina-botulinica.jpg'),
+    // Sem foto nova de Skinbooster: mantém o caminho antigo do Storage e usa a arte
+    // "Skinbooster" já existente no projeto como padrão
     'service-5': {
+        ...service(5, 'Skinbooster', ''),
         storagePath: 'service-5.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0035.jpg',
-        name: 'Serviço 5 - Skinbooster',
-        description: 'Imagem do serviço skinbooster',
-        section: 'services'
+        defaultPath: '/images/dra.paulasatoo-20251210-0012.jpg'
     },
-    'service-6': {
-        storagePath: 'service-6.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0012.jpg',
-        name: 'Serviço 6 - Bioestimuladores',
-        description: 'Imagem de bioestimuladores',
-        section: 'services'
-    },
-    'service-7': {
-        storagePath: 'service-7.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0017.jpg',
-        name: 'Serviço 7 - Fios de PDO',
-        description: 'Imagem de fios de PDO',
-        section: 'services'
-    },
-    'service-8': {
-        storagePath: 'service-8.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0028.jpg',
-        name: 'Serviço 8 - Microagulhamento',
-        description: 'Imagem de microagulhamento',
-        section: 'services'
-    },
-    // BEFORE/AFTER - Antes e Depois
-    'before-after-1-before': {
-        storagePath: 'before-after-1-before.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0022.jpg',
-        name: 'Antes e Depois 1 - Antes',
-        description: 'Imagem antes do procedimento 1',
-        section: 'results'
-    },
-    'before-after-1-after': {
-        storagePath: 'before-after-1-after.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0023.jpg',
-        name: 'Antes e Depois 1 - Depois',
-        description: 'Imagem depois do procedimento 1',
-        section: 'results'
-    },
-    'before-after-2-before': {
-        storagePath: 'before-after-2-before.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0024.jpg',
-        name: 'Antes e Depois 2 - Antes',
-        description: 'Imagem antes do procedimento 2',
-        section: 'results'
-    },
-    'before-after-2-after': {
-        storagePath: 'before-after-2-after.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0025.jpg',
-        name: 'Antes e Depois 2 - Depois',
-        description: 'Imagem depois do procedimento 2',
-        section: 'results'
-    },
-    'before-after-3-before': {
-        storagePath: 'before-after-3-before.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0026.jpg',
-        name: 'Antes e Depois 3 - Antes',
-        description: 'Imagem antes do procedimento 3',
-        section: 'results'
-    },
-    'before-after-3-after': {
-        storagePath: 'before-after-3-after.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0027.jpg',
-        name: 'Antes e Depois 3 - Depois',
-        description: 'Imagem depois do procedimento 3',
-        section: 'results'
-    },
-    // TESTIMONIALS - Depoimentos
-    'testimonial-1': {
-        storagePath: 'testimonial-1.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0031.jpg',
-        name: 'Depoimento 1',
-        description: 'Foto do depoimento 1',
-        section: 'testimonials'
-    },
-    'testimonial-2': {
-        storagePath: 'testimonial-2.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0032.jpg',
-        name: 'Depoimento 2',
-        description: 'Foto do depoimento 2',
-        section: 'testimonials'
-    },
-    'testimonial-3': {
-        storagePath: 'testimonial-3.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0033.jpg',
-        name: 'Depoimento 3',
-        description: 'Foto do depoimento 3',
-        section: 'testimonials'
-    },
-    'testimonial-4': {
-        storagePath: 'testimonial-4.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0034.jpg',
-        name: 'Depoimento 4',
-        description: 'Foto do depoimento 4',
-        section: 'testimonials'
-    },
-    // VIDEO SECTION - Thumbnails de vídeos
-    'video-1': {
-        storagePath: 'video-1.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0002.jpg',
-        name: 'Thumbnail Vídeo 1',
-        description: 'Thumbnail do vídeo 1',
-        section: 'videos'
-    },
-    'video-2': {
-        storagePath: 'video-2.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0004.jpg',
-        name: 'Thumbnail Vídeo 2',
-        description: 'Thumbnail do vídeo 2',
-        section: 'videos'
-    },
-    'video-3': {
-        storagePath: 'video-3.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0007.jpg',
-        name: 'Thumbnail Vídeo 3',
-        description: 'Thumbnail do vídeo 3',
-        section: 'videos'
-    },
-    'video-4': {
-        storagePath: 'video-4.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0009.jpg',
-        name: 'Thumbnail Vídeo 4',
-        description: 'Thumbnail do vídeo 4',
-        section: 'videos'
-    },
-    // INSTAGRAM - Feed do Instagram
-    'instagram-1': {
-        storagePath: 'instagram-1.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0001.jpg',
-        name: 'Instagram Post 1',
-        description: 'Imagem do feed do Instagram',
-        section: 'instagram'
-    },
-    'instagram-2': {
-        storagePath: 'instagram-2.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0003.jpg',
-        name: 'Instagram Post 2',
-        description: 'Imagem do feed do Instagram',
-        section: 'instagram'
-    },
-    'instagram-3': {
-        storagePath: 'instagram-3.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0006.jpg',
-        name: 'Instagram Post 3',
-        description: 'Imagem do feed do Instagram',
-        section: 'instagram'
-    },
-    'instagram-4': {
-        storagePath: 'instagram-4.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0008.jpg',
-        name: 'Instagram Post 4',
-        description: 'Imagem do feed do Instagram',
-        section: 'instagram'
-    },
-    'instagram-5': {
-        storagePath: 'instagram-5.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0011.jpg',
-        name: 'Instagram Post 5',
-        description: 'Imagem do feed do Instagram',
-        section: 'instagram'
-    },
-    'instagram-6': {
-        storagePath: 'instagram-6.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0014.jpg',
-        name: 'Instagram Post 6',
-        description: 'Imagem do feed do Instagram',
-        section: 'instagram'
-    },
-    'instagram-7': {
-        storagePath: 'instagram-7.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0018.jpg',
-        name: 'Instagram Post 7',
-        description: 'Imagem do feed do Instagram',
-        section: 'instagram'
-    },
-    'instagram-8': {
-        storagePath: 'instagram-8.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0021.jpg',
-        name: 'Instagram Post 8',
-        description: 'Imagem do feed do Instagram',
-        section: 'instagram'
-    },
-    // BLOG - Artigos do blog
-    'blog-1': {
-        storagePath: 'blog-1.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0036.jpg',
-        name: 'Blog Post 1',
-        description: 'Imagem do artigo 1 do blog',
-        section: 'blog'
-    },
-    'blog-2': {
-        storagePath: 'blog-2.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0037.jpg',
-        name: 'Blog Post 2',
-        description: 'Imagem do artigo 2 do blog',
-        section: 'blog'
-    },
-    'blog-3': {
-        storagePath: 'blog-3.jpg',
-        defaultPath: '/images/dra.paulasatoo-20251210-0038.jpg',
-        name: 'Blog Post 3',
-        description: 'Imagem do artigo 3 do blog',
-        section: 'blog'
-    }
+    'service-6': service(6, 'Microagulhamento', 'microagulhamento.jpg'),
+    'service-7': service(7, 'Limpeza de Pele', 'limpeza-de-pele.jpg'),
+    'service-8': service(8, 'Corporal / Massagem', 'massagem.jpg'),
+    // RESULTADOS - galeria com 4 itens
+    'result-1': result(1, 'Limpeza de Pele', 'limpeza-de-pele.jpg'),
+    'result-2': result(2, 'Lábios (vista frontal)', 'labios-frontal.jpg'),
+    'result-3': result(3, 'Toxina Botulínica', 'toxina-botulinica.jpg'),
+    'result-4': result(4, 'Preenchimento Labial', 'preenchimento-labial.jpg')
 };
 
 // Exportar configuração para uso na página admin
 export const getImageConfig = () => IMAGE_CONFIG;
+
+const defaultImages = Object.fromEntries(
+    Object.entries(IMAGE_CONFIG).map(([id, config]) => [id, config.defaultPath])
+);
 
 // Context para compartilhar as URLs das imagens
 const SiteImagesContext = createContext({});
 
 // Provider que carrega as imagens uma vez
 export const SiteImagesProvider = ({ children }) => {
-    const [images, setImages] = useState({});
+    // Começa com as imagens padrão para não exibir fotos antigas enquanto carrega
+    const [images, setImages] = useState(defaultImages);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -275,40 +81,24 @@ export const SiteImagesProvider = ({ children }) => {
 
     const loadImages = async () => {
         try {
-            const imageUrls = {};
-
-            // Carregar todas as imagens do Storage
-            for (const [id, config] of Object.entries(IMAGE_CONFIG)) {
-                // Tentar obter URL do Storage
+            // Verifica todas em paralelo; usa o Storage só quando o arquivo existe
+            const entries = await Promise.all(Object.entries(IMAGE_CONFIG).map(async ([id, config]) => {
                 const { data } = supabase.storage
                     .from('site-images')
                     .getPublicUrl(config.storagePath);
-
-                if (data?.publicUrl) {
-                    // Verificar se a imagem existe no Storage
-                    try {
-                        const response = await fetch(data.publicUrl, { method: 'HEAD' });
-                        if (response.ok) {
-                            imageUrls[id] = data.publicUrl + '?v=' + Date.now();
-                        } else {
-                            imageUrls[id] = config.defaultPath;
-                        }
-                    } catch (e) {
-                        imageUrls[id] = config.defaultPath;
-                    }
-                } else {
-                    imageUrls[id] = config.defaultPath;
+                try {
+                    const response = await fetch(data.publicUrl, { method: 'HEAD' });
+                    if (response.ok) return [id, data.publicUrl + '?v=' + Date.now()];
+                } catch {
+                    // Storage indisponível: usa a imagem padrão
                 }
-            }
+                return [id, config.defaultPath];
+            }));
+            const imageUrls = Object.fromEntries(entries);
 
             setImages(imageUrls);
         } catch (error) {
             console.error('Error loading site images:', error);
-            // Usar imagens padrão em caso de erro
-            const defaultImages = {};
-            for (const [id, config] of Object.entries(IMAGE_CONFIG)) {
-                defaultImages[id] = config.defaultPath;
-            }
             setImages(defaultImages);
         } finally {
             setLoading(false);

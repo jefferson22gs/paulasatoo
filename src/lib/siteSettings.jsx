@@ -1,8 +1,9 @@
 import { useState, useEffect, createContext, useContext } from 'react';
-import { supabase, getSettings } from './supabase';
+import { getSettings } from './supabase';
+import { dropLegacy, LEGACY_SETTINGS, DEFAULT_ADDRESS, formatAddress } from './siteDefaults';
 
 // Context para compartilhar as configurações do site
-const SiteSettingsContext = createContext({});
+const SiteSettingsContext = createContext({ settings: DEFAULT_ADDRESS, address: formatAddress(DEFAULT_ADDRESS) });
 
 // Provider que carrega as configurações uma vez
 export const SiteSettingsProvider = ({ children }) => {
@@ -13,10 +14,7 @@ export const SiteSettingsProvider = ({ children }) => {
         phone: '(19) 99003-7678',
         whatsapp: '5519990037678',
         email: 'contato@drapaulasatoo.com.br',
-        address: 'Rua Almirante Tamandaré, 54',
-        neighborhood: 'Cidade Nova II',
-        city: 'Indaiatuba',
-        state: 'SP',
+        ...DEFAULT_ADDRESS,
         hours_weekdays: 'Seg - Sex: 9h às 20h',
         hours_saturday: 'Sábado: 9h às 14h',
         instagram: '@dra.paulasatoo'
@@ -33,7 +31,7 @@ export const SiteSettingsProvider = ({ children }) => {
             if (data) {
                 setSettings(prev => ({
                     ...prev,
-                    ...data
+                    ...dropLegacy(data, LEGACY_SETTINGS)
                 }));
             }
         } catch (error) {
@@ -49,13 +47,8 @@ export const SiteSettingsProvider = ({ children }) => {
         loadSettings();
     };
 
-    // Formatar endereço completo
-    const getFullAddress = () => {
-        return `${settings.address}, ${settings.neighborhood}, ${settings.city} - ${settings.state}`;
-    };
-
     return (
-        <SiteSettingsContext.Provider value={{ settings, loading, refreshSettings, getFullAddress }}>
+        <SiteSettingsContext.Provider value={{ settings, loading, refreshSettings, address: formatAddress(settings) }}>
             {children}
         </SiteSettingsContext.Provider>
     );

@@ -5,18 +5,13 @@ import InstallPWA from './components/InstallPWA';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
-import StatsSection from './components/StatsSection';
 import ServicesSection from './components/ServicesSection';
-import BeforeAfterSection from './components/BeforeAfterSection';
 import TestimonialsSection from './components/TestimonialsSection';
-import ProcedureCalculator from './components/ProcedureCalculator';
 import SchedulingSection from './components/SchedulingSection';
 import VideoSection from './components/VideoSection';
 import InstagramSection from './components/InstagramSection';
-import BlogSection from './components/BlogSection';
 import FAQSection from './components/FAQSection';
 import CertificationsSection from './components/CertificationsSection';
-import NewsletterSection from './components/NewsletterSection';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import MobileNav from './components/MobileNav';
@@ -45,7 +40,6 @@ import ReportsPage from './pages/admin/ReportsPage';
 import VideosPage from './pages/admin/VideosPage';
 
 // Public components for new features
-import ReferralSection from './components/ReferralSection';
 import PushNotificationPrompt from './components/PushNotificationPrompt';
 
 // Site Images Provider
@@ -86,20 +80,11 @@ const PublicSite = () => (
                 {/* About Section */}
                 <AboutSection />
 
-                {/* Stats with Animated Counters */}
-                <StatsSection />
-
                 {/* Services Grid */}
                 <ServicesSection />
 
-                {/* Before/After Comparison */}
-                <BeforeAfterSection />
-
                 {/* Testimonials Carousel */}
                 <TestimonialsSection />
-
-                {/* Procedure Calculator */}
-                <ProcedureCalculator />
 
                 {/* Scheduling Form */}
                 <SchedulingSection />
@@ -107,23 +92,14 @@ const PublicSite = () => (
                 {/* Video Content */}
                 <VideoSection />
 
-                {/* Instagram Feed */}
+                {/* Galeria com 4 resultados */}
                 <InstagramSection />
-
-                {/* Blog Preview */}
-                <BlogSection />
 
                 {/* FAQ Accordion */}
                 <FAQSection />
 
-                {/* Referral Program - Indique e Ganhe */}
-                <ReferralSection />
-
                 {/* Certifications & Brands */}
                 <CertificationsSection />
-
-                {/* Newsletter Signup */}
-                <NewsletterSection />
               </main>
 
               {/* Footer */}

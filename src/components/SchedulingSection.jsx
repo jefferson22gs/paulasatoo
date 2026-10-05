@@ -77,7 +77,7 @@ const SchedulingSection = () => {
                     'Toxina Botulínica',
                     'Skinbooster',
                     'Microagulhamento',
-                    'Hidragloss',
+                    'Limpeza de Pele',
                     'Corporal',
                     'Outros',
                 ]);
@@ -98,7 +98,7 @@ const SchedulingSection = () => {
                 'Toxina Botulínica',
                 'Skinbooster',
                 'Microagulhamento',
-                'Hidragloss',
+                'Limpeza de Pele',
                 'Corporal',
                 'Outros',
             ]);
@@ -219,10 +219,10 @@ Aguardo retorno. Obrigada!`;
                         {/* Benefits */}
                         <div className="space-y-4">
                             {[
-                                'Avaliação personalizada e sem compromisso',
+                                'Avaliação personalizada',
                                 'Primeira consulta com análise detalhada',
-                                'Ambiente acolhedor e discreto',
-                                'Atendimento humanizado e acolhedor',
+                                'Ambiente acolhedor',
+                                'Atendimento humanizado',
                             ].map((benefit, index) => (
                                 <div key={index} className="flex items-center gap-3">
                                     <div className="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0">

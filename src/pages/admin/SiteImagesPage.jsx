@@ -36,11 +36,7 @@ const SiteImagesPage = () => {
         { id: 'hero', name: 'Principal' },
         { id: 'about', name: 'Sobre' },
         { id: 'services', name: 'Serviços' },
-        { id: 'results', name: 'Resultados' },
-        { id: 'testimonials', name: 'Depoimentos' },
-        { id: 'videos', name: 'Vídeos' },
-        { id: 'instagram', name: 'Instagram' },
-        { id: 'blog', name: 'Blog' }
+        { id: 'results', name: 'Resultados' }
     ];
 
     const [activeSection, setActiveSection] = useState('all');

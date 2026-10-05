@@ -5,7 +5,7 @@ import { useSiteSettings } from '../lib/siteSettings.jsx';
 
 const ChatBot = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { settings } = useSiteSettings();
+    const { settings, address } = useSiteSettings();
 
     const [messages, setMessages] = useState([
         {
@@ -16,14 +16,11 @@ const ChatBot = () => {
     ]);
     const [inputValue, setInputValue] = useState('');
 
-    // Construir endereço completo
-    const fullAddress = `${settings.address || 'Rua Almirante Tamandaré, 54'} - ${settings.neighborhood || 'Cidade Nova II'}, ${settings.city || 'Indaiatuba'} - ${settings.state || 'SP'}`;
-
     const quickReplies = [
         { text: 'Quero agendar', response: 'Ótimo! Para agendar sua avaliação, você pode clicar no botão abaixo para falar diretamente pelo WhatsApp com nossa equipe. Elas vão encontrar o melhor horário para você! 📅' },
-        { text: 'Preços', response: 'Os valores variam de acordo com cada procedimento e são personalizados após a avaliação. Agende uma consulta sem compromisso para receber um orçamento personalizado! 💫' },
-        { text: 'Procedimentos', response: 'Oferecemos diversos tratamentos: Harmonização Facial, Preenchimento Labial, Bioestimuladores, Toxina Botulínica, Skinbooster, Microagulhamento e mais! Qual te interessa? ✨' },
-        { text: 'Localização', response: `Estamos na ${fullAddress}. Fácil acesso e estacionamento próximo! 📍` },
+        { text: 'Preços', response: 'Os valores variam de acordo com cada procedimento e são personalizados após a avaliação. Agende uma avaliação para receber um orçamento personalizado! 💫' },
+        { text: 'Procedimentos', response: 'Oferecemos diversos tratamentos: Harmonização Facial, Preenchimento Labial, Bioestimuladores, Toxina Botulínica, Skinbooster, Microagulhamento, Limpeza de Pele e mais! Qual te interessa? ✨' },
+        { text: 'Localização', response: `Estamos na ${address.full}. 📍` },
     ];
 
     const handleQuickReply = (reply) => {

@@ -13,6 +13,7 @@ import {
     Send
 } from 'lucide-react';
 import { getAppointments, updateAppointment, getSettings } from '../../lib/supabase';
+import { DEFAULT_ADDRESS, formatAddress, dropLegacy, LEGACY_SETTINGS } from '../../lib/siteDefaults';
 
 const AppointmentsPage = () => {
     const [appointments, setAppointments] = useState([]);
@@ -66,15 +67,13 @@ const AppointmentsPage = () => {
 
     const openWhatsAppConfirmation = async (appointment) => {
         // Buscar configurações atualizadas antes de enviar
-        let currentAddress = settings.address;
-
+        let freshSettings = settings;
         try {
-            const freshSettings = await getSettings();
-            currentAddress = freshSettings?.address || settings.address || 'Endereço a confirmar';
+            freshSettings = await getSettings();
         } catch (error) {
             console.error('Error fetching settings:', error);
-            currentAddress = settings.address || 'Endereço a confirmar';
         }
+        const currentAddress = formatAddress({ ...DEFAULT_ADDRESS, ...dropLegacy(freshSettings || {}, LEGACY_SETTINGS) }).full;
 
         // Dados do agendamento específico
         const firstName = appointment.name?.split(' ')[0] || 'Cliente';

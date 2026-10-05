@@ -33,11 +33,12 @@ const AboutSection = () => {
                     <AnimatedSection direction="left" className="relative">
                         <div className="relative">
                             {/* Main Image */}
-                            <div className="relative z-10 rounded-2xl overflow-hidden shadow-card">
+                            <div className="relative z-10 rounded-2xl overflow-hidden shadow-card max-w-md mx-auto lg:max-w-none aspect-[4/5]">
                                 <img
-                                    src={images.about || '/images/dra.paulasatoo-20251210-0030.jpg'}
-                                    alt="Dra. Paula Satoo"
-                                    className="w-full h-auto object-cover"
+                                    src={images.about || '/images/dra-paula-satoo-retrato.jpg'}
+                                    alt="Retrato da Dra. Paula Satoo, farmacêutica esteta"
+                                    loading="lazy"
+                                    className="w-full h-full object-cover object-top"
                                 />
                             </div>
 
@@ -60,22 +61,19 @@ const AboutSection = () => {
                         <div className="lg:pl-8">
                             {/* Section Label */}
                             <span className="text-gold font-medium tracking-widest uppercase text-sm">
-                                {content.about_badge || 'Sobre'}
+                                {content.about_badge}
                             </span>
 
                             {/* Title */}
                             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-charcoal mt-4 mb-6 leading-tight">
-                                {content.about_title || 'Dra. Paula Satoo'}
+                                {content.about_title}
                             </h2>
 
                             {/* Description */}
                             <div className="space-y-4 text-charcoal/80 leading-relaxed">
-                                <p>
-                                    {content.about_paragraph_1 || 'Farmacêutica Esteta apaixonada pela ciência da beleza e do cuidado. Com formação especializada em harmonização facial e procedimentos estéticos avançados, minha missão é realçar a beleza natural de cada paciente.'}
-                                </p>
-                                <p>
-                                    {content.about_paragraph_2 || 'Acredito que a estética vai além da aparência — é sobre como você se sente. Por isso, cada procedimento é personalizado, respeitando suas características únicas e desejos.'}
-                                </p>
+                                {[content.about_paragraph_1, content.about_paragraph_2].filter(Boolean).map((text, i) => (
+                                    <p key={i}>{text}</p>
+                                ))}
                             </div>
 
                             {/* Quote */}

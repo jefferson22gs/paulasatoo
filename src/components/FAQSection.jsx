@@ -2,23 +2,19 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedSection from './AnimatedSection';
 import { ChevronDown, HelpCircle } from 'lucide-react';
-import { useSiteContent } from '../lib/siteContent.jsx';
 import { useDynamicData } from '../lib/dynamicData.jsx';
+import { isLegacyFaq } from '../lib/siteDefaults';
 
 const FAQSection = () => {
     const [openIndex, setOpenIndex] = useState(null);
-    const { content } = useSiteContent();
     const { faqs: dynamicFaqs } = useDynamicData();
 
     // Usar dados do banco se disponíveis, senão usar fallback
-    const faqs = dynamicFaqs.length > 0 ? dynamicFaqs : [
+    const activeFaqs = dynamicFaqs.filter(faq => !isLegacyFaq(faq));
+    const faqs = activeFaqs.length > 0 ? activeFaqs : [
         {
             question: 'Os procedimentos são dolorosos?',
             answer: 'A maioria dos procedimentos causa apenas um leve desconforto. Utilizamos anestésicos tópicos e técnicas que minimizam qualquer incômodo.',
-        },
-        {
-            question: 'Quanto tempo duram os resultados?',
-            answer: 'A duração varia conforme o procedimento: Toxina Botulínica dura de 4 a 6 meses, Preenchimentos de 8 a 18 meses, e Bioestimuladores podem durar até 2 anos.',
         },
         {
             question: 'É possível ter resultados naturais?',

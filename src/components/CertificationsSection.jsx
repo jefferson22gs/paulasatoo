@@ -27,7 +27,7 @@ const CertificationsSection = () => {
     ];
 
     const brands = [
-        { name: 'Elleva', description: 'Bioestimuladores' },
+        { name: 'Sculptra', description: 'Bioestimuladores' },
         { name: 'Allergan', description: 'Botox & Preenchedores' },
         { name: 'Galderma', description: 'Skinboosters' },
         { name: 'Rennova', description: 'Ácido Hialurônico' },

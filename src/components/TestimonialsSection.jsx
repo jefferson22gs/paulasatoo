@@ -2,47 +2,33 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedSection from './AnimatedSection';
 import { Quote, ChevronLeft, ChevronRight, Star } from 'lucide-react';
-import { useSiteImages } from '../lib/siteImages.jsx';
-import { useSiteContent } from '../lib/siteContent.jsx';
 import { useDynamicData } from '../lib/dynamicData.jsx';
+import { isSampleTestimonial } from '../lib/siteDefaults';
+
+const getInitials = (name = '') =>
+    name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join('');
 
 const TestimonialsSection = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(0);
-    const { images } = useSiteImages();
-    const { content } = useSiteContent();
     const { testimonials: dynamicTestimonials } = useDynamicData();
 
-    // Usar dados do banco se disponíveis, senão usar fallback
-    const testimonials = dynamicTestimonials.length > 0 ? dynamicTestimonials.map((t, i) => ({
-        id: t.id,
-        name: t.name,
-        treatment: t.role || 'Cliente',
-        image: t.image_url || images[`testimonial-${i + 1}`] || '/images/dra.paulasatoo-20251210-0031.jpg',
-        rating: t.rating || 5,
-        text: t.content,
-    })) : [
-        {
-            id: 1,
-            name: 'Maria Clara S.',
-            treatment: 'Harmonização Facial',
-            image: images['testimonial-1'] || '/images/dra.paulasatoo-20251210-0031.jpg',
-            rating: 5,
-            text: 'Resultado incrível e super natural! A Dra. Paula tem mãos de fada e entendeu exatamente o que eu queria.',
-        },
-        {
-            id: 2,
-            name: 'Juliana M.',
-            treatment: 'Preenchimento Labial',
-            image: images['testimonial-2'] || '/images/dra.paulasatoo-20251210-0032.jpg',
-            rating: 5,
-            text: 'Sempre tive medo de procedimentos estéticos, mas a Dra. Paula me deixou super tranquila.',
-        },
-    ];
+    // Somente depoimentos cadastrados no Admin. Exemplos fictícios não são exibidos.
+    // Avatar: foto informada no cadastro (image_url) ou iniciais do nome.
+    const testimonials = dynamicTestimonials
+        .filter(t => t.content && !isSampleTestimonial(t))
+        .map(t => ({
+            id: t.id,
+            name: t.name,
+            treatment: t.role || 'Paciente',
+            image: t.image_url || null,
+            rating: Math.min(5, Math.max(1, t.rating || 5)),
+            text: t.content,
+        }));
 
     const nextSlide = useCallback(() => {
         setDirection(1);
-        setActiveIndex((prev) => (prev + 1) % testimonials.length);
+        setActiveIndex((prev) => (prev + 1) % Math.max(testimonials.length, 1));
     }, [testimonials.length]);
 
     const prevSlide = () => {
@@ -52,9 +38,14 @@ const TestimonialsSection = () => {
 
     // Auto-play
     useEffect(() => {
+        if (testimonials.length < 2) return;
         const timer = setInterval(nextSlide, 6000);
         return () => clearInterval(timer);
-    }, [nextSlide]);
+    }, [nextSlide, testimonials.length]);
+
+    // Sem depoimentos reais cadastrados: a seção não aparece
+    if (testimonials.length === 0) return null;
+    const current = testimonials[activeIndex % testimonials.length];
 
     const variants = {
         enter: (direction) => ({
@@ -101,12 +92,19 @@ const TestimonialsSection = () => {
                                     <div className="flex flex-col lg:flex-row gap-8 items-center">
                                         {/* Image */}
                                         <div className="relative flex-shrink-0">
-                                            <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-full overflow-hidden border-4 border-gold/30">
-                                                <img
-                                                    src={testimonials[activeIndex].image}
-                                                    alt={testimonials[activeIndex].name}
-                                                    className="w-full h-full object-cover"
-                                                />
+                                            <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-full overflow-hidden border-4 border-gold/30
+                                    bg-sage/20 flex items-center justify-center">
+                                                {current.image ? (
+                                                    <img
+                                                        src={current.image}
+                                                        alt={current.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <span aria-hidden="true" className="font-serif text-4xl text-sage-500">
+                                                        {getInitials(current.name)}
+                                                    </span>
+                                                )}
                                             </div>
                                             <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-gold rounded-full 
                                     flex items-center justify-center shadow-lg">
@@ -118,7 +116,7 @@ const TestimonialsSection = () => {
                                         <div className="flex-1 text-center lg:text-left">
                                             {/* Stars */}
                                             <div className="flex justify-center lg:justify-start gap-1 mb-4">
-                                                {[...Array(testimonials[activeIndex].rating)].map((_, i) => (
+                                                {[...Array(current.rating)].map((_, i) => (
                                                     <Star key={i} className="w-5 h-5 fill-gold text-gold" />
                                                 ))}
                                             </div>
@@ -126,16 +124,16 @@ const TestimonialsSection = () => {
                                             {/* Quote */}
                                             <blockquote className="text-lg lg:text-xl text-charcoal/80 dark:text-white/80 
                                            italic leading-relaxed mb-6">
-                                                "{testimonials[activeIndex].text}"
+                                                "{current.text}"
                                             </blockquote>
 
                                             {/* Author */}
                                             <div>
                                                 <p className="font-serif text-xl font-semibold text-charcoal dark:text-white">
-                                                    {testimonials[activeIndex].name}
+                                                    {current.name}
                                                 </p>
                                                 <p className="text-gold text-sm">
-                                                    {testimonials[activeIndex].treatment}
+                                                    {current.treatment}
                                                 </p>
                                             </div>
                                         </div>
@@ -162,7 +160,7 @@ const TestimonialsSection = () => {
                                 <button
                                     key={index}
                                     onClick={() => { setDirection(index > activeIndex ? 1 : -1); setActiveIndex(index); }}
-                                    className={`w-2 h-2 rounded-full transition-all ${index === activeIndex
+                                    className={`w-2 h-2 rounded-full transition-all ${index === activeIndex % testimonials.length
                                         ? 'w-8 bg-gold'
                                         : 'bg-charcoal/20 dark:bg-white/20 hover:bg-charcoal/40'
                                         }`}

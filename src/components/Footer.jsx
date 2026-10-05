@@ -4,7 +4,7 @@ import { useSiteContent } from '../lib/siteContent.jsx';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
-    const { settings } = useSiteSettings();
+    const { settings, address } = useSiteSettings();
     const { content } = useSiteContent();
 
     const quickLinks = [
@@ -22,6 +22,8 @@ const Footer = () => {
         'Toxina Botulínica',
         'Skinbooster',
         'Microagulhamento',
+        'Limpeza de Pele',
+        'Corporal',
     ];
 
     return (
@@ -113,10 +115,15 @@ const Footer = () => {
                         <ul className="space-y-4">
                             <li className="flex items-start gap-3">
                                 <MapPin className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
-                                <span className="text-white/70 text-sm">
-                                    {settings.address || 'Rua Almirante Tamandaré, 54'}<br />
-                                    {settings.neighborhood || 'Cidade Nova II'}, {settings.city || 'Indaiatuba'} - {settings.state || 'SP'}
-                                </span>
+                                <a
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.full)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-white/70 text-sm hover:text-white transition-colors"
+                                >
+                                    {address.street}<br />
+                                    {address.city}
+                                </a>
                             </li>
                             <li>
                                 <a
@@ -142,7 +149,7 @@ const Footer = () => {
                 <div className="mt-12 rounded-2xl overflow-hidden shadow-lg">
                     <iframe
                         src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(
-                            `${settings.address || 'Rua Almirante Tamandaré, 54'}, ${settings.neighborhood || 'Cidade Nova II'}, ${settings.city || 'Indaiatuba'} - ${settings.state || 'SP'}, Brasil`
+                            `${address.full}, Brasil`
                         )}`}
                         width="100%"
                         height="300"

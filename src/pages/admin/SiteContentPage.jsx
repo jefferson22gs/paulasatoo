@@ -21,6 +21,7 @@ import {
     RefreshCw
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { DEFAULT_CONTENT, dropLegacy, LEGACY_CONTENT } from '../../lib/siteDefaults';
 
 const SiteContentPage = () => {
     const [loading, setLoading] = useState(true);
@@ -31,53 +32,8 @@ const SiteContentPage = () => {
     const [logoPreview, setLogoPreview] = useState(null);
     const [currentLogo, setCurrentLogo] = useState(null);
 
-    // Conteúdos de texto do site
-    const [content, setContent] = useState({
-        // Hero Section
-        hero_badge: 'Estética Avançada',
-        hero_title: 'Dra. Paula Satoo',
-        hero_subtitle: 'Realce sua beleza natural com procedimentos estéticos personalizados e resultados que transformam',
-        hero_cta_primary: 'Agendar Avaliação',
-        hero_cta_secondary: 'Conhecer Tratamentos',
-
-        // About Section
-        about_badge: 'SOBRE',
-        about_title: 'Dra. Paula Satoo',
-        about_paragraph_1: 'Farmacêutica Esteta apaixonada pela ciência da beleza e do cuidado. Com formação especializada em harmonização facial e procedimentos estéticos avançados, minha missão é realçar a beleza natural de cada paciente.',
-        about_paragraph_2: 'Acredito que a estética vai além da aparência — é sobre como você se sente. Por isso, cada procedimento é personalizado, respeitando suas características únicas e desejos.',
-        about_experience_years: '8',
-        about_experience_label: 'Anos de Experiência',
-        about_procedures_count: '2000',
-        about_procedures_label: 'Procedimentos',
-        about_satisfaction_percent: '98',
-        about_satisfaction_label: 'Satisfação',
-
-        // Services Section
-        services_badge: 'TRATAMENTOS',
-        services_title: 'Procedimentos Estéticos',
-        services_subtitle: 'Conheça os tratamentos que vão realçar sua beleza natural',
-
-        // Results Section
-        results_badge: 'RESULTADOS',
-        results_title: 'Transformações Reais',
-        results_subtitle: 'Veja os resultados dos nossos procedimentos',
-
-        // Testimonials Section
-        testimonials_badge: 'DEPOIMENTOS',
-        testimonials_title: 'O Que Dizem Nossos Clientes',
-        testimonials_subtitle: 'Experiências reais de transformação e satisfação',
-
-        // FAQ Section
-        faq_badge: 'DÚVIDAS',
-        faq_title: 'Perguntas Frequentes',
-        faq_subtitle: 'Tire suas dúvidas sobre os procedimentos',
-
-        // Footer
-        footer_brand: 'Dra. Paula Satoo',
-        footer_tagline: 'Estética Avançada',
-        footer_description: 'Farmacêutica Esteta especializada em harmonização facial e procedimentos estéticos que realçam sua beleza natural.',
-        footer_copyright: 'Dra. Paula Satoo - Estética Avançada. Todos os direitos reservados.'
-    });
+    // Conteúdos de texto do site (mesmos padrões da página pública)
+    const [content, setContent] = useState(DEFAULT_CONTENT);
 
     const sections = [
         { id: 'logo', name: 'Logo do Site', icon: Image },
@@ -109,7 +65,8 @@ const SiteContentPage = () => {
                 data.forEach(item => {
                     contentObj[item.key] = item.value;
                 });
-                setContent(prev => ({ ...prev, ...contentObj }));
+                // Textos antigos dão lugar aos novos; Salvar grava a versão atual no banco
+                setContent(prev => ({ ...prev, ...dropLegacy(contentObj, LEGACY_CONTENT) }));
             }
         } catch (error) {
             console.error('Error loading content:', error);
@@ -375,10 +332,10 @@ const SiteContentPage = () => {
                         onChange={(e) => handleContentChange('hero_title', e.target.value)}
                         className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl 
                                    focus:border-sage focus:ring-0 outline-none transition-colors"
-                        placeholder="Transformando *beleza* em confiança"
+                        placeholder="Dra. Paula *Satoo*"
                     />
                     <p className="text-xs text-charcoal/50 mt-1">
-                        💡 Use *asteriscos* para destacar uma palavra em itálico dourado. Ex: Transformando *beleza* em confiança
+                        💡 Use *asteriscos* para destacar uma palavra em itálico dourado. Ex: Dra. Paula *Satoo*
                     </p>
                 </div>
 
