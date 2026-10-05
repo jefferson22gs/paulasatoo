@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedSection from './AnimatedSection';
-import { getSchedules, getServices, createAppointment, getSettings } from '../lib/supabase';
+import { getSchedules, getServices, createAppointment, getSettings, hasBackend } from '../lib/supabase';
 import {
     User,
     Sparkles,
@@ -36,6 +36,8 @@ const SchedulingSection = () => {
 
     const loadData = async () => {
         try {
+            // Sem backend: vai direto para os valores padrão (catch abaixo)
+            if (!hasBackend) throw null;
             // Load schedules from admin
             const schedules = await getSchedules();
             if (schedules.length > 0) {
@@ -89,7 +91,7 @@ const SchedulingSection = () => {
                 setWhatsappNumber(settings.whatsapp);
             }
         } catch (error) {
-            console.error('Error loading data:', error);
+            if (error) console.error('Error loading data:', error);
             // Use fallback values
             setTreatments([
                 'Harmonização Facial',
@@ -118,7 +120,7 @@ const SchedulingSection = () => {
 
         try {
             // Save appointment to Supabase
-            await createAppointment({
+            if (hasBackend) await createAppointment({
                 name: formData.name,
                 phone: formData.phone,
                 treatment: formData.treatment,

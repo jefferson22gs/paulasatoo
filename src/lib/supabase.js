@@ -1,9 +1,10 @@
-import { createClient } from '@supabase/supabase-js';
+// Backend (Supabase) desvinculado: o site roda só com o conteúdo do código.
+// Sem cliente, sem URL e sem chave no bundle. As funções abaixo ficam para
+// uma eventual religação, mas não são chamadas enquanto hasBackend = false.
+// ponytail: para religar, recriar o client com createClient(url, anonKey) e hasBackend = true.
+export const hasBackend = false;
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = null;
 
 // Helper functions for common operations
 

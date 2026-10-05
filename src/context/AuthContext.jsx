@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, hasBackend } from '../lib/supabase';
 
 const AuthContext = createContext({});
 
@@ -7,9 +7,10 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(hasBackend);
 
     useEffect(() => {
+        if (!hasBackend) return;
         // Check active sessions
         const getSession = async () => {
             const { data: { session } } = await supabase.auth.getSession();

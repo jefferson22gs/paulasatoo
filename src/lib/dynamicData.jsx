@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
-import { supabase } from './supabase';
+import { supabase, hasBackend } from './supabase';
 
 // Context para compartilhar dados dinâmicos
 const DynamicDataContext = createContext({});
@@ -9,9 +9,10 @@ export const DynamicDataProvider = ({ children }) => {
     const [testimonials, setTestimonials] = useState([]);
     const [faqs, setFaqs] = useState([]);
     const [videos, setVideos] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(hasBackend);
 
     useEffect(() => {
+        if (!hasBackend) return;
         loadAllData();
     }, []);
 

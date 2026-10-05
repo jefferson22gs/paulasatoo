@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
-import { supabase } from './supabase';
+import { supabase, hasBackend } from './supabase';
 
 // Mapeamento de todas as imagens editáveis do site.
 // storagePath com sufixo "-v2": arquivos antigos do Storage (service-N.jpg, about.jpg)
@@ -73,9 +73,10 @@ const SiteImagesContext = createContext({});
 export const SiteImagesProvider = ({ children }) => {
     // Começa com as imagens padrão para não exibir fotos antigas enquanto carrega
     const [images, setImages] = useState(defaultImages);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(hasBackend);
 
     useEffect(() => {
+        if (!hasBackend) return;
         loadImages();
     }, []);
 

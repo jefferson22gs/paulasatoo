@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import InstallPWA from './components/InstallPWA';
@@ -53,6 +53,7 @@ import { SiteContentProvider } from './lib/siteContent.jsx';
 
 // Dynamic Data Provider
 import { DynamicDataProvider } from './lib/dynamicData.jsx';
+import { hasBackend } from './lib/supabase';
 
 import './App.css';
 
@@ -109,7 +110,7 @@ const PublicSite = () => (
               <WhatsAppButton />
               <ChatBot />
               <InstallPWA />
-              <PushNotificationPrompt />
+              {hasBackend && <PushNotificationPrompt />}
               <MobileNav />
             </div>
           </ThemeProvider>
@@ -126,9 +127,9 @@ function App() {
         {/* Public Site */}
         <Route path="/" element={<PublicSite />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin/login" element={<LoginPage />} />
-        <Route
+        {/* Admin Routes (somente com backend ligado) */}
+        {hasBackend && <Route path="/admin/login" element={<LoginPage />} />}
+        {hasBackend && <Route
           path="/admin"
           element={
             <ProtectedRoute>
@@ -151,7 +152,10 @@ function App() {
           <Route path="reports" element={<ReportsPage />} />
           <Route path="notifications" element={<NotificationsPage />} />
           <Route path="referrals" element={<ReferralPage />} />
-        </Route>
+        </Route>}
+
+        {/* Rotas desconhecidas (inclui /admin sem backend) voltam para o site */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AuthProvider>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
-import { getSettings } from './supabase';
+import { getSettings, hasBackend } from './supabase';
 import { dropLegacy, LEGACY_SETTINGS, DEFAULT_ADDRESS, formatAddress } from './siteDefaults';
 
 // Context para compartilhar as configurações do site
@@ -19,9 +19,10 @@ export const SiteSettingsProvider = ({ children }) => {
         hours_saturday: 'Sábado: 9h às 14h',
         instagram: '@dra.paulasatoo'
     });
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(hasBackend);
 
     useEffect(() => {
+        if (!hasBackend) return;
         loadSettings();
     }, []);
 

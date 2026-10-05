@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
-import { supabase } from './supabase';
+import { supabase, hasBackend } from './supabase';
 import { dropLegacy, LEGACY_CONTENT, DEFAULT_CONTENT } from './siteDefaults';
 
 // Context para compartilhar o conteúdo do site
@@ -9,9 +9,10 @@ const SiteContentContext = createContext({});
 export const SiteContentProvider = ({ children }) => {
     const [content, setContent] = useState(DEFAULT_CONTENT);
     const [logo, setLogo] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(hasBackend);
 
     useEffect(() => {
+        if (!hasBackend) return;
         loadContent();
         loadLogo();
     }, []);
